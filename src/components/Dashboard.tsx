@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import StatsCards from './StatsCards';
+import StreakTracker from './StreakTracker';
 import NotesSection from './NotesSection';
 import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
@@ -14,7 +15,13 @@ const Dashboard = () => {
   const renderSection = () => {
     switch (activeSection) {
       case 'notes':
-        return <NotesSection />;
+        return (
+          <>
+            <StatsCards />
+            <StreakTracker />
+            <NotesSection />
+          </>
+        );
       case 'gallery':
         return <GallerySection />;
       case 'book':
@@ -22,14 +29,19 @@ const Dashboard = () => {
       case 'tasks':
         return <TaskManager />;
       default:
-        return <NotesSection />;
+        return (
+          <>
+            <StatsCards />
+            <StreakTracker />
+            <NotesSection />
+          </>
+        );
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white pb-20">
       <Header />
-      {activeSection === 'notes' && <StatsCards />}
       <div className="flex-1">
         {renderSection()}
       </div>
