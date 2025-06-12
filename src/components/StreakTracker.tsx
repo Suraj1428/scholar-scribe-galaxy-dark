@@ -30,9 +30,10 @@ const StreakTracker = () => {
     { day: 'Day 20', streak: 12 }
   ];
 
-  const currentStreak = 12;
-  const highestStreak = 15;
-  const todayUploaded = true;
+  // Dynamic streak values that can change
+  const currentStreak: number = 12;
+  const highestStreak: number = 15;
+  const todayUploaded: boolean = true;
 
   const chartConfig = {
     streak: {
