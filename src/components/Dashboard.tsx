@@ -16,11 +16,11 @@ const Dashboard = () => {
     switch (activeSection) {
       case 'notes':
         return (
-          <>
+          <div className="space-y-4 sm:space-y-6">
             <StatsCards />
             <StreakTracker />
             <NotesSection />
-          </>
+          </div>
         );
       case 'gallery':
         return <GallerySection />;
@@ -30,19 +30,19 @@ const Dashboard = () => {
         return <TaskManager />;
       default:
         return (
-          <>
+          <div className="space-y-4 sm:space-y-6">
             <StatsCards />
             <StreakTracker />
             <NotesSection />
-          </>
+          </div>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white pb-20">
+    <div className="min-h-screen bg-gray-900 text-white">
       <Header />
-      <div className="flex-1">
+      <div className="flex-1 min-h-0">
         {renderSection()}
       </div>
       <BottomNavigation activeSection={activeSection} onSectionChange={setActiveSection} />
