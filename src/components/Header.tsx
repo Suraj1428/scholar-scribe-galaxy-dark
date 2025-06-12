@@ -26,26 +26,6 @@ const Header = () => {
           className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500"
         />
       </div>
-      
-      <div className="mt-4">
-        <h2 className="text-sm text-gray-400 mb-2">Inspiring Scientists</h2>
-        <div className="flex space-x-3 overflow-x-auto">
-          {[
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
-            'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face',
-            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
-            'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop&crop=face'
-          ].map((src, index) => (
-            <div key={index} className="flex-shrink-0">
-              <img
-                src={src}
-                alt={`Scientist ${index + 1}`}
-                className="w-12 h-12 rounded-full object-cover border-2 border-purple-500"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,17 +1,39 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Plus, Upload, FileText, Calendar } from 'lucide-react';
+import { Plus, Upload, FileText, Calendar, ZoomIn, ZoomOut, RotateCcw, FileImage } from 'lucide-react';
 
 const NotesSection = () => {
-  const recentNotes = [
-    { title: 'Physics - Quantum Mechanics', subject: 'Physics', date: '2 hours ago', color: 'bg-blue-500' },
-    { title: 'Chemistry - Organic Compounds', subject: 'Chemistry', date: '1 day ago', color: 'bg-green-500' },
-    { title: 'Mathematics - Calculus', subject: 'Mathematics', date: '2 days ago', color: 'bg-purple-500' },
-    { title: 'Biology - Cell Structure', subject: 'Biology', date: '3 days ago', color: 'bg-orange-500' }
-  ];
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  const notesBySubject = {
+    Physics: [
+      { title: 'Quantum Mechanics', date: '2 hours ago', type: 'image', url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop' },
+      { title: 'Wave Properties', date: '1 day ago', type: 'pdf', url: '#' }
+    ],
+    Chemistry: [
+      { title: 'Organic Compounds', date: '1 day ago', type: 'image', url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop' },
+      { title: 'Molecular Structure', date: '2 days ago', type: 'pdf', url: '#' }
+    ],
+    Mathematics: [
+      { title: 'Calculus Notes', date: '2 days ago', type: 'image', url: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop' }
+    ],
+    Biology: [
+      { title: 'Cell Structure', date: '3 days ago', type: 'image', url: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop' }
+    ]
+  };
+
+  const zoomIn = () => setZoomLevel(Math.min(zoomLevel * 1.2, 3));
+  const zoomOut = () => setZoomLevel(Math.max(zoomLevel / 1.2, 0.5));
+  const resetZoom = () => setZoomLevel(1);
+
+  const closeViewer = () => {
+    setSelectedItem(null);
+    setZoomLevel(1);
+  };
 
   return (
     <div className="p-4 space-y-6">
@@ -41,32 +63,84 @@ const NotesSection = () => {
         </CardContent>
       </Card>
 
-      {/* Recent Notes */}
-      <div>
-        <h3 className="text-lg font-semibold text-white mb-4">Recent Notes</h3>
-        <div className="space-y-3">
-          {recentNotes.map((note, index) => (
-            <Card key={index} className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full ${note.color}`}></div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">{note.title}</h4>
-                    <div className="flex items-center gap-4 mt-1">
-                      <span className="text-gray-400 text-sm">{note.subject}</span>
-                      <div className="flex items-center gap-1 text-gray-400 text-sm">
+      {/* Notes by Subject */}
+      {Object.entries(notesBySubject).map(([subject, notes]) => (
+        <div key={subject}>
+          <h3 className="text-lg font-semibold text-white mb-4">{subject}</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {notes.map((note, index) => (
+              <Card 
+                key={index} 
+                className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors cursor-pointer"
+                onClick={() => setSelectedItem(note)}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    {note.type === 'image' ? (
+                      <FileImage className="h-5 w-5 text-blue-400" />
+                    ) : (
+                      <FileText className="h-5 w-5 text-red-400" />
+                    )}
+                    <div className="flex-1">
+                      <h4 className="text-white font-medium text-sm">{note.title}</h4>
+                      <div className="flex items-center gap-1 text-gray-400 text-xs mt-1">
                         <Calendar className="h-3 w-3" />
                         {note.date}
                       </div>
                     </div>
                   </div>
-                  <FileText className="h-5 w-5 text-gray-400" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  {note.type === 'image' && (
+                    <img 
+                      src={note.url} 
+                      alt={note.title}
+                      className="w-full h-20 object-cover rounded mt-2"
+                    />
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
+
+      {/* Viewer Modal */}
+      {selectedItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col">
+          <div className="flex justify-between items-center p-4 bg-gray-800">
+            <h3 className="text-white font-semibold">{selectedItem.title}</h3>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={zoomOut} className="border-gray-600 text-gray-300">
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+              <Button size="sm" variant="outline" onClick={resetZoom} className="border-gray-600 text-gray-300">
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+              <Button size="sm" variant="outline" onClick={zoomIn} className="border-gray-600 text-gray-300">
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+              <Button size="sm" onClick={closeViewer} className="bg-red-600 hover:bg-red-700">
+                Close
+              </Button>
+            </div>
+          </div>
+          <div className="flex-1 overflow-auto p-4">
+            {selectedItem.type === 'image' ? (
+              <img 
+                src={selectedItem.url} 
+                alt={selectedItem.title}
+                className="max-w-full h-auto mx-auto transition-transform duration-200"
+                style={{ transform: `scale(${zoomLevel})` }}
+              />
+            ) : (
+              <div className="bg-gray-700 p-8 rounded-lg text-center">
+                <FileText className="h-16 w-16 text-red-400 mx-auto mb-4" />
+                <p className="text-white">PDF Viewer</p>
+                <p className="text-gray-400 text-sm mt-2">PDF support coming soon</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
