@@ -4,15 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Flame, TrendingUp, Calendar } from 'lucide-react';
+import { useStreakData } from '@/hooks/useStreakData';
 
 const StreakTracker = () => {
-  // Empty data - will be populated when connected to backend
-  const streakData: { day: string; streak: number }[] = [];
-
-  // Initial values - will be updated from backend
-  const currentStreak: number = 0;
-  const highestStreak: number = 0;
-  const todayUploaded: boolean = false;
+  const { streakData, currentStreak, highestStreak, todayUploaded } = useStreakData();
 
   const chartConfig = {
     streak: {

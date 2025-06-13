@@ -5,39 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Calendar, Clock, Target, X } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
+import { useTasks } from '@/hooks/useTasks';
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState<any[]>([]);
+  const { tasks, loading, createTask, toggleTask, deleteTask } = useTasks();
   const [newTask, setNewTask] = useState('');
-  const { toast } = useToast();
 
-  const toggleTask = (id: number) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
-  };
-
-  const addTask = () => {
+  const handleAddTask = async () => {
     if (newTask.trim()) {
-      const task = {
-        id: Date.now(),
-        title: newTask,
-        completed: false,
-        priority: 'medium',
-        time: '1 hour'
-      };
-      setTasks([...tasks, task]);
+      await createTask(newTask);
       setNewTask('');
-      toast({
-        title: "Task Added",
-        description: `"${newTask}" has been added to your tasks.`,
-      });
     }
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
   };
 
   const getPriorityColor = (priority: string) => {
@@ -48,6 +26,10 @@ const TaskManager = () => {
       default: return 'bg-gray-500';
     }
   };
+
+  if (loading) {
+    return <div className="p-4 text-white">Loading tasks...</div>;
+  }
 
   const completedTasks = tasks.filter(task => task.completed).length;
   const totalTasks = tasks.length;
@@ -80,8 +62,8 @@ const TaskManager = () => {
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-3 sm:p-4 text-center">
             <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400 mx-auto mb-2" />
-            <p className="text-white font-bold text-sm sm:text-lg">{tasks.length > 0 ? `${tasks.length}h` : '0h'}</p>
-            <p className="text-gray-400 text-xs">Time Left</p>
+            <p className="text-white font-bold text-sm sm:text-lg">{tasks.length - completedTasks}</p>
+            <p className="text-gray-400 text-xs">Remaining</p>
           </CardContent>
         </Card>
       </div>
@@ -98,10 +80,10 @@ const TaskManager = () => {
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
               className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 text-sm sm:text-base"
-              onKeyPress={(e) => e.key === 'Enter' && addTask()}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTask()}
             />
             <Button 
-              onClick={addTask} 
+              onClick={handleAddTask} 
               className="bg-purple-600 hover:bg-purple-700 w-full sm:w-auto"
               disabled={!newTask.trim()}
             >
@@ -134,7 +116,7 @@ const TaskManager = () => {
                       <span className="text-gray-400 text-xs capitalize">{task.priority} priority</span>
                       <div className="flex items-center gap-1 text-gray-400 text-xs">
                         <Clock className="h-3 w-3" />
-                        {task.time}
+                        {task.estimated_time}
                       </div>
                     </div>
                   </div>

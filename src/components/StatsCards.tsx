@@ -2,33 +2,42 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, BookOpen, Calendar, Crown } from 'lucide-react';
+import { useNotes } from '@/hooks/useNotes';
+import { useTasks } from '@/hooks/useTasks';
+import { useStreakData } from '@/hooks/useStreakData';
 
 const StatsCards = () => {
+  const { notes } = useNotes();
+  const { tasks } = useTasks();
+  const { currentStreak } = useStreakData();
+
+  const subjects = new Set(notes.map(note => note.subject)).size;
+
   const stats = [
     {
       title: 'Total Notes',
-      value: '142',
+      value: notes.length.toString(),
       icon: FileText,
       color: 'text-blue-400',
       bgColor: 'bg-blue-500/20'
     },
     {
       title: 'Subjects',
-      value: '8',
+      value: subjects.toString(),
       icon: BookOpen,
       color: 'text-green-400',
       bgColor: 'bg-green-500/20'
     },
     {
-      title: 'Days Active',
-      value: '23',
+      title: 'Streak',
+      value: currentStreak.toString(),
       icon: Calendar,
       color: 'text-orange-400',
       bgColor: 'bg-orange-500/20'
     },
     {
-      title: 'Premium',
-      value: 'Pro',
+      title: 'Tasks',
+      value: tasks.length.toString(),
       icon: Crown,
       color: 'text-purple-400',
       bgColor: 'bg-purple-500/20'

@@ -4,89 +4,40 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Plus, Upload, FileText, Calendar, ZoomIn, ZoomOut, RotateCcw, FileImage, X } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
+import { useNotes } from '@/hooks/useNotes';
 
 const NotesSection = () => {
+  const { notes, loading, createNote } = useNotes();
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [noteTitle, setNoteTitle] = useState('');
-  const [notes, setNotes] = useState<any[]>([]);
-  const { toast } = useToast();
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || !noteTitle.trim()) return;
 
-    if (!noteTitle.trim()) {
-      toast({
-        title: "Title Required",
-        description: "Please enter a title for your note.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Create file URL for preview
-    const fileUrl = URL.createObjectURL(file);
-    const fileType = file.type.startsWith('image/') ? 'image' : 'pdf';
-
-    const newNote = {
-      id: Date.now(),
-      title: noteTitle,
-      type: fileType,
-      url: fileUrl,
-      date: 'Just now',
-      subject: 'General', // Default subject, can be enhanced later
-    };
-
-    setNotes(prev => [newNote, ...prev]);
+    await createNote(noteTitle, file);
     setNoteTitle('');
-    
-    toast({
-      title: "Note Uploaded Successfully!",
-      description: `"${noteTitle}" has been added to your notes.`,
-    });
-
-    // Reset file input
     event.target.value = '';
   };
 
-  const createTextNote = () => {
-    if (!noteTitle.trim()) {
-      toast({
-        title: "Title Required",
-        description: "Please enter a title for your note.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const newNote = {
-      id: Date.now(),
-      title: noteTitle,
-      type: 'text',
-      content: '',
-      date: 'Just now',
-      subject: 'General',
-    };
-
-    setNotes(prev => [newNote, ...prev]);
+  const createTextNote = async () => {
+    if (!noteTitle.trim()) return;
+    await createNote(noteTitle, undefined, '');
     setNoteTitle('');
-    
-    toast({
-      title: "Note Created Successfully!",
-      description: `"${noteTitle}" has been created.`,
-    });
   };
 
   const zoomIn = () => setZoomLevel(Math.min(zoomLevel * 1.2, 3));
   const zoomOut = () => setZoomLevel(Math.max(zoomLevel / 1.2, 0.5));
   const resetZoom = () => setZoomLevel(1);
-
   const closeViewer = () => {
     setSelectedItem(null);
     setZoomLevel(1);
   };
+
+  if (loading) {
+    return <div className="p-4 text-white">Loading notes...</div>;
+  }
 
   return (
     <div className="p-2 sm:p-4 space-y-4 sm:space-y-6 pb-20">
@@ -149,9 +100,9 @@ const NotesSection = () => {
               >
                 <CardContent className="p-3 sm:p-4">
                   <div className="flex items-center gap-3">
-                    {note.type === 'image' ? (
+                    {note.file_type === 'image' ? (
                       <FileImage className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
-                    ) : note.type === 'text' ? (
+                    ) : note.file_type === 'text' ? (
                       <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
                     ) : (
                       <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-red-400" />
@@ -160,13 +111,13 @@ const NotesSection = () => {
                       <h4 className="text-white font-medium text-sm truncate">{note.title}</h4>
                       <div className="flex items-center gap-1 text-gray-400 text-xs mt-1">
                         <Calendar className="h-3 w-3" />
-                        {note.date}
+                        {new Date(note.created_at).toLocaleDateString()}
                       </div>
                     </div>
                   </div>
-                  {note.type === 'image' && (
+                  {note.file_type === 'image' && note.file_url && (
                     <img 
-                      src={note.url} 
+                      src={note.file_url} 
                       alt={note.title}
                       className="w-full h-16 sm:h-20 object-cover rounded mt-2"
                     />
@@ -192,7 +143,7 @@ const NotesSection = () => {
           <div className="flex justify-between items-center p-3 sm:p-4 bg-gray-800">
             <h3 className="text-white font-semibold text-sm sm:text-base truncate mr-4">{selectedItem.title}</h3>
             <div className="flex gap-1 sm:gap-2 flex-shrink-0">
-              {selectedItem.type === 'image' && (
+              {selectedItem.file_type === 'image' && (
                 <>
                   <Button size="sm" variant="outline" onClick={zoomOut} className="border-gray-600 text-gray-300 p-1 sm:p-2">
                     <ZoomOut className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -211,18 +162,18 @@ const NotesSection = () => {
             </div>
           </div>
           <div className="flex-1 overflow-auto p-2 sm:p-4">
-            {selectedItem.type === 'image' ? (
+            {selectedItem.file_type === 'image' && selectedItem.file_url ? (
               <img 
-                src={selectedItem.url} 
+                src={selectedItem.file_url} 
                 alt={selectedItem.title}
                 className="max-w-full h-auto mx-auto transition-transform duration-200"
                 style={{ transform: `scale(${zoomLevel})` }}
               />
-            ) : selectedItem.type === 'text' ? (
+            ) : selectedItem.file_type === 'text' ? (
               <div className="bg-gray-700 p-4 sm:p-8 rounded-lg text-center max-w-2xl mx-auto">
                 <FileText className="h-12 w-12 sm:h-16 sm:w-16 text-green-400 mx-auto mb-4" />
                 <h2 className="text-white text-lg sm:text-xl mb-4">{selectedItem.title}</h2>
-                <p className="text-gray-400 text-sm">Text note content will be editable here.</p>
+                <p className="text-gray-300 text-sm">{selectedItem.content || 'No content added yet.'}</p>
               </div>
             ) : (
               <div className="bg-gray-700 p-4 sm:p-8 rounded-lg text-center max-w-2xl mx-auto">
