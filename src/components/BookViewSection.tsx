@@ -118,7 +118,7 @@ const BookViewSection = () => {
       ) : (
         <div className="space-y-4">
           {Object.entries(groupedNotes).map(([subject, subjectNotes]) => {
-            const subjectImages = subjectImages.filter(note => note.file_type === 'image');
+            const subjectImages = subjectNotes.filter(note => note.file_type === 'image');
             const isSelected = selectedSubject === subject;
             
             return (

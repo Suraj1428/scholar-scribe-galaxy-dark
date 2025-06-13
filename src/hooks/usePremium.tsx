@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export const usePremium = () => {
@@ -21,18 +20,9 @@ export const usePremium = () => {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
-        .from('user_subscriptions')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error checking premium status:', error);
-        return;
-      }
-
-      setIsPremium(!!data?.is_premium);
+      // For now, check localStorage until the database table is created
+      const premiumStatus = localStorage.getItem(`premium_${user.id}`);
+      setIsPremium(premiumStatus === 'true');
     } catch (error) {
       console.error('Error checking premium status:', error);
     }
@@ -43,19 +33,13 @@ export const usePremium = () => {
 
     setUpgradeLoading(true);
     try {
-      // Simulate payment processing (you can integrate with Stripe here)
+      // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const { error } = await supabase
-        .from('user_subscriptions')
-        .upsert({
-          user_id: user.id,
-          is_premium: true,
-          upgraded_at: new Date().toISOString(),
-          upgrade_method: 'payment'
-        });
-
-      if (error) throw error;
+      // Store in localStorage for now
+      localStorage.setItem(`premium_${user.id}`, 'true');
+      localStorage.setItem(`premium_method_${user.id}`, 'payment');
+      localStorage.setItem(`premium_date_${user.id}`, new Date().toISOString());
 
       setIsPremium(true);
       toast({
@@ -79,17 +63,11 @@ export const usePremium = () => {
     setPromoLoading(true);
     try {
       if (code.toUpperCase() === 'SURAJ28') {
-        const { error } = await supabase
-          .from('user_subscriptions')
-          .upsert({
-            user_id: user.id,
-            is_premium: true,
-            upgraded_at: new Date().toISOString(),
-            upgrade_method: 'promo_code',
-            promo_code: code.toUpperCase()
-          });
-
-        if (error) throw error;
+        // Store in localStorage for now
+        localStorage.setItem(`premium_${user.id}`, 'true');
+        localStorage.setItem(`premium_method_${user.id}`, 'promo_code');
+        localStorage.setItem(`premium_code_${user.id}`, code.toUpperCase());
+        localStorage.setItem(`premium_date_${user.id}`, new Date().toISOString());
 
         setIsPremium(true);
         toast({
