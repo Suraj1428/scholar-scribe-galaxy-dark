@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Upload, FileText, Image as ImageIcon } from 'lucide-react';
 import { useNotes } from '@/hooks/useNotes';
@@ -12,7 +11,6 @@ import { usePremium } from '@/hooks/usePremium';
 const NotesSection = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [subject, setSubject] = useState('General');
   const [file, setFile] = useState<File | null>(null);
   const { notes, createNote } = useNotes();
@@ -26,10 +24,9 @@ const NotesSection = () => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    const result = await createNote(title, file, content, subject);
+    const result = await createNote(title, file, '', subject);
     if (result) {
       setTitle('');
-      setContent('');
       setSubject('General');
       setFile(null);
       setIsCreating(false);
@@ -108,23 +105,14 @@ const NotesSection = () => {
               </div>
 
               <div>
-                <Textarea
-                  placeholder="Note content (optional)..."
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 min-h-[100px]"
-                />
-              </div>
-
-              <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Attach File (optional)
+                  Upload Image
                 </label>
                 <div className="flex items-center gap-2">
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    accept="image/*,.pdf"
+                    accept="image/*"
                     className="hidden"
                     id="file-upload"
                   />
@@ -133,15 +121,11 @@ const NotesSection = () => {
                     className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded cursor-pointer text-white"
                   >
                     <Upload className="h-4 w-4" />
-                    Choose File
+                    Choose Image
                   </label>
                   {file && (
                     <div className="flex items-center gap-2 text-sm text-gray-300">
-                      {file.type.startsWith('image/') ? (
-                        <ImageIcon className="h-4 w-4" />
-                      ) : (
-                        <FileText className="h-4 w-4" />
-                      )}
+                      <ImageIcon className="h-4 w-4" />
                       {file.name}
                     </div>
                   )}
@@ -158,7 +142,6 @@ const NotesSection = () => {
                   onClick={() => {
                     setIsCreating(false);
                     setTitle('');
-                    setContent('');
                     setSubject('General');
                     setFile(null);
                   }}
@@ -199,9 +182,6 @@ const NotesSection = () => {
                         </span>
                       )}
                     </div>
-                    {note.content && (
-                      <p className="text-gray-300 text-sm mb-2">{note.content}</p>
-                    )}
                     {note.file_url && note.file_type === 'image' && (
                       <img 
                         src={note.file_url} 
