@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { usePremium } from './usePremium';
 
 export interface Note {
   id: string;
@@ -19,6 +20,7 @@ export const useNotes = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const { isPremium } = usePremium();
   const { toast } = useToast();
 
   const fetchNotes = async () => {
@@ -56,10 +58,34 @@ export const useNotes = () => {
     return urlData.publicUrl;
   };
 
-  const createNote = async (title: string, file?: File, content?: string) => {
+  const createNote = async (title: string, file?: File, content?: string, subject?: string) => {
     if (!user) return;
 
     try {
+      // Check limits for free users
+      if (!isPremium) {
+        const imageNotes = notes.filter(note => note.file_type === 'image');
+        const subjects = new Set(notes.map(note => note.subject)).size;
+        
+        if (file && file.type.startsWith('image/') && imageNotes.length >= 18) {
+          toast({
+            title: "Upload Limit Reached",
+            description: "Free users can upload maximum 18 images. Upgrade to premium for unlimited uploads!",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        if (subject && !notes.some(note => note.subject === subject) && subjects >= 2) {
+          toast({
+            title: "Subject Limit Reached", 
+            description: "Free users can create maximum 2 subjects. Upgrade to premium for unlimited subjects!",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
       let fileUrl = '';
       let fileType = '';
 
@@ -76,7 +102,7 @@ export const useNotes = () => {
           content: content || '',
           file_url: fileUrl,
           file_type: fileType || 'text',
-          subject: 'General'
+          subject: subject || 'General'
         })
         .select()
         .single();
