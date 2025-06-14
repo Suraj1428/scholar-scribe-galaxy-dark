@@ -72,7 +72,7 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
     setLoading(true);
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('user_preferences')
         .insert({
           user_id: user?.id,
