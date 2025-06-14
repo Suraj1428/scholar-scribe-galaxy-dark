@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -50,6 +49,55 @@ export const useQuiz = () => {
     },
     onError: (error: any) => {
       toast.error('Failed to generate quiz: ' + error.message);
+    }
+  });
+
+  const createQuizFromJSON = useMutation({
+    mutationFn: async ({ topic, difficulty = 'medium', questions }: {
+      topic: string;
+      difficulty?: string;
+      questions: any[];
+    }) => {
+      if (!user) throw new Error('User not authenticated');
+
+      // Create quiz session
+      const { data: session, error: sessionError } = await supabase
+        .from('quiz_sessions')
+        .insert({
+          user_id: user.id,
+          topic,
+          difficulty,
+          total_questions: questions.length
+        })
+        .select()
+        .single();
+
+      if (sessionError) throw sessionError;
+
+      // Insert questions
+      const questionsToInsert = questions.map((q: any) => ({
+        quiz_session_id: session.id,
+        question: q.question,
+        option_a: q.option_a,
+        option_b: q.option_b,
+        option_c: q.option_c,
+        option_d: q.option_d,
+        correct_answer: q.correct_answer
+      }));
+
+      const { error: questionsError } = await supabase
+        .from('quiz_questions')
+        .insert(questionsToInsert);
+
+      if (questionsError) throw questionsError;
+
+      return { session_id: session.id, questions: questions.length };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quiz-sessions'] });
+    },
+    onError: (error: any) => {
+      toast.error('Failed to create quiz: ' + error.message);
     }
   });
 
@@ -137,6 +185,7 @@ export const useQuiz = () => {
 
   return {
     generateQuiz,
+    createQuizFromJSON,
     getQuizSessions,
     getQuizQuestions,
     submitAnswer,

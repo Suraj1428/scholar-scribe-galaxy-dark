@@ -4,17 +4,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Brain, ExternalLink, Trophy, MessageSquare } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Brain, ExternalLink, Trophy, MessageSquare, Upload, AlertCircle } from 'lucide-react';
 import { useQuiz } from '@/hooks/useQuiz';
 import QuizTaker from './QuizTaker';
+import { toast } from 'sonner';
 
 const QuizSection = () => {
   const [topic, setTopic] = useState('');
   const [difficulty, setDifficulty] = useState('medium');
   const [questionCount, setQuestionCount] = useState(5);
   const [activeQuizId, setActiveQuizId] = useState<string | null>(null);
+  const [jsonQuestions, setJsonQuestions] = useState('');
+  const [isCreatingQuiz, setIsCreatingQuiz] = useState(false);
   
-  const { getQuizSessions } = useQuiz();
+  const { getQuizSessions, createQuizFromJSON } = useQuiz();
   const { data: sessions, isLoading } = getQuizSessions;
 
   const handleOpenChatGPT = () => {
@@ -45,6 +49,50 @@ Rules:
     const chatGPTUrl = `https://chat.openai.com/?q=${encodedPrompt}`;
     
     window.open(chatGPTUrl, '_blank');
+  };
+
+  const handleCreateQuizFromJSON = async () => {
+    if (!jsonQuestions.trim() || !topic.trim()) {
+      toast.error('Please enter both topic and JSON questions');
+      return;
+    }
+
+    setIsCreatingQuiz(true);
+    try {
+      const questions = JSON.parse(jsonQuestions.trim());
+      
+      if (!Array.isArray(questions) || questions.length === 0) {
+        throw new Error('Invalid JSON format or empty array');
+      }
+
+      // Validate question structure
+      const requiredFields = ['question', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_answer'];
+      const isValid = questions.every(q => 
+        requiredFields.every(field => q.hasOwnProperty(field) && q[field])
+      );
+
+      if (!isValid) {
+        throw new Error('Questions are missing required fields');
+      }
+
+      const result = await createQuizFromJSON.mutateAsync({
+        topic: topic.trim(),
+        difficulty,
+        questions
+      });
+
+      if (result.session_id) {
+        setActiveQuizId(result.session_id);
+        setTopic('');
+        setJsonQuestions('');
+        toast.success('Quiz created successfully!');
+      }
+    } catch (error) {
+      console.error('Failed to create quiz:', error);
+      toast.error('Failed to create quiz. Please check your JSON format.');
+    } finally {
+      setIsCreatingQuiz(false);
+    }
   };
 
   if (activeQuizId) {
@@ -135,10 +183,65 @@ Rules:
             <ul className="text-sm text-gray-300 space-y-1">
               <li>• Click the button above to open ChatGPT with your custom prompt</li>
               <li>• Copy the generated JSON questions from ChatGPT</li>
-              <li>• Come back here and manually create your quiz session</li>
+              <li>• Paste the JSON in the textarea below to create your quiz</li>
               <li>• No API limits or rate limiting!</li>
             </ul>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Paste JSON Section */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Upload className="h-5 w-5 text-green-400" />
+            Paste Quiz JSON from ChatGPT
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Quiz JSON (from ChatGPT)
+            </label>
+            <Textarea
+              placeholder="Paste the JSON array from ChatGPT here..."
+              value={jsonQuestions}
+              onChange={(e) => setJsonQuestions(e.target.value)}
+              className="bg-gray-700 border-gray-600 text-white min-h-[200px] font-mono text-sm"
+            />
+          </div>
+          
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-yellow-200">
+                <p className="font-medium mb-1">Make sure to:</p>
+                <ul className="space-y-1 text-xs">
+                  <li>• Enter the topic name above</li>
+                  <li>• Paste only the JSON array (starting with [ and ending with ])</li>
+                  <li>• Ensure all questions have the required fields</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <Button 
+            onClick={handleCreateQuizFromJSON}
+            disabled={!topic.trim() || !jsonQuestions.trim() || isCreatingQuiz}
+            className="w-full bg-green-600 hover:bg-green-700"
+          >
+            {isCreatingQuiz ? (
+              <>
+                <Brain className="h-4 w-4 mr-2 animate-spin" />
+                Creating Quiz...
+              </>
+            ) : (
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Create Quiz from JSON
+              </>
+            )}
+          </Button>
         </CardContent>
       </Card>
 
