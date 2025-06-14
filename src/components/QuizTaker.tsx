@@ -86,21 +86,23 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
   };
 
   const getOptionClass = (option: string) => {
+    const baseClass = "w-full p-4 text-left border-2 rounded-lg transition-all cursor-pointer";
+    
     if (!showResult) {
       return selectedAnswer === option
-        ? 'border-purple-500 bg-purple-500/20'
-        : 'border-gray-600 hover:border-gray-500';
+        ? `${baseClass} border-purple-400 bg-purple-500/30 text-white shadow-md`
+        : `${baseClass} border-gray-500 bg-gray-700 text-white hover:border-purple-300 hover:bg-gray-600`;
     }
     
     if (option === currentQuestion?.correct_answer) {
-      return 'border-green-500 bg-green-500/20 text-green-400';
+      return `${baseClass} border-green-400 bg-green-500/30 text-green-100 shadow-md`;
     }
     
     if (selectedAnswer === option && option !== currentQuestion?.correct_answer) {
-      return 'border-red-500 bg-red-500/20 text-red-400';
+      return `${baseClass} border-red-400 bg-red-500/30 text-red-100 shadow-md`;
     }
     
-    return 'border-gray-600 opacity-50';
+    return `${baseClass} border-gray-600 bg-gray-700/50 text-gray-300`;
   };
 
   if (isLoading) {
@@ -162,7 +164,7 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
             {currentQuestion?.question}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-4">
           {['A', 'B', 'C', 'D'].map((option) => {
             const optionKey = `option_${option.toLowerCase()}` as keyof QuizQuestion;
             const optionText = currentQuestion?.[optionKey] as string;
@@ -172,18 +174,18 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
                 key={option}
                 onClick={() => handleAnswerSelect(option)}
                 disabled={isAnswered}
-                className={`w-full p-4 text-left border-2 rounded-lg transition-all ${getOptionClass(option)}`}
+                className={getOptionClass(option)}
               >
-                <div className="flex items-center gap-3">
-                  <span className="font-semibold text-sm bg-gray-700 rounded-full w-8 h-8 flex items-center justify-center">
+                <div className="flex items-center gap-4">
+                  <span className="font-bold text-lg bg-gray-600 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 shadow-sm">
                     {option}
                   </span>
-                  <span>{optionText}</span>
+                  <span className="text-base font-medium">{optionText}</span>
                   {showResult && option === currentQuestion?.correct_answer && (
-                    <CheckCircle className="h-5 w-5 text-green-400 ml-auto" />
+                    <CheckCircle className="h-6 w-6 text-green-400 ml-auto flex-shrink-0" />
                   )}
                   {showResult && selectedAnswer === option && option !== currentQuestion?.correct_answer && (
-                    <XCircle className="h-5 w-5 text-red-400 ml-auto" />
+                    <XCircle className="h-6 w-6 text-red-400 ml-auto flex-shrink-0" />
                   )}
                 </div>
               </button>
