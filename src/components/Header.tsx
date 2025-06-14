@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Bell, User, LogOut, X, Minimize2 } from 'lucide-react';
+import { Search, Bell, User, LogOut, X, Minimize2, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotes } from '@/hooks/useNotes';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
@@ -94,11 +94,6 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               <p className="text-gray-400 text-xs sm:text-sm truncate">
                 {greeting}, {user?.user_metadata?.full_name || user?.email}!
               </p>
-              {preferences?.exam_type && (
-                <p className="text-purple-400 text-xs sm:text-sm font-medium truncate">
-                  Preparing for {getExamDisplayName(preferences.exam_type)}
-                </p>
-              )}
             </div>
             <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
               {onSectionChange && (
@@ -115,6 +110,14 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                   <Minimize2 className="h-4 w-4" />
                   <span>Compress</span>
                 </Button>
+              )}
+              {preferences?.exam_type && (
+                <div className="flex items-center gap-2 text-purple-400">
+                  <Target className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="text-xs sm:text-sm font-medium">
+                    {getExamDisplayName(preferences.exam_type)}
+                  </span>
+                </div>
               )}
               <Button
                 variant="ghost"
