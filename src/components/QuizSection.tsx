@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Brain, Clock, Trophy, Plus } from 'lucide-react';
+import { Brain, ExternalLink, Trophy, MessageSquare } from 'lucide-react';
 import { useQuiz } from '@/hooks/useQuiz';
 import QuizTaker from './QuizTaker';
 
@@ -14,26 +14,37 @@ const QuizSection = () => {
   const [questionCount, setQuestionCount] = useState(5);
   const [activeQuizId, setActiveQuizId] = useState<string | null>(null);
   
-  const { generateQuiz, getQuizSessions, isGenerating } = useQuiz();
+  const { getQuizSessions } = useQuiz();
   const { data: sessions, isLoading } = getQuizSessions;
 
-  const handleGenerateQuiz = async () => {
+  const handleOpenChatGPT = () => {
     if (!topic.trim()) return;
     
-    try {
-      const result = await generateQuiz.mutateAsync({
-        topic: topic.trim(),
-        difficulty,
-        questionCount
-      });
-      
-      if (result.session_id) {
-        setActiveQuizId(result.session_id);
-        setTopic('');
-      }
-    } catch (error) {
-      console.error('Failed to generate quiz:', error);
-    }
+    const prompt = `Generate ${questionCount} multiple choice questions about "${topic.trim()}" with ${difficulty} difficulty level.
+
+Format your response as a JSON array with this exact structure:
+[
+  {
+    "question": "Question text here?",
+    "option_a": "First option",
+    "option_b": "Second option", 
+    "option_c": "Third option",
+    "option_d": "Fourth option",
+    "correct_answer": "A"
+  }
+]
+
+Rules:
+- Make questions relevant to the topic
+- Ensure only one correct answer per question
+- Make distractors plausible but clearly wrong
+- Use clear, concise language
+- Return only valid JSON, no extra text`;
+
+    const encodedPrompt = encodeURIComponent(prompt);
+    const chatGPTUrl = `https://chat.openai.com/?q=${encodedPrompt}`;
+    
+    window.open(chatGPTUrl, '_blank');
   };
 
   if (activeQuizId) {
@@ -50,7 +61,7 @@ const QuizSection = () => {
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white mb-2">AI Quiz Generator</h2>
-        <p className="text-gray-400">Enter any topic and get instant MCQ questions</p>
+        <p className="text-gray-400">Enter any topic and generate questions with ChatGPT</p>
       </div>
 
       {/* Quiz Generator Form */}
@@ -58,7 +69,7 @@ const QuizSection = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Brain className="h-5 w-5 text-purple-400" />
-            Create New Quiz
+            Create New Quiz with ChatGPT
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -110,22 +121,24 @@ const QuizSection = () => {
           </div>
           
           <Button 
-            onClick={handleGenerateQuiz}
-            disabled={!topic.trim() || isGenerating}
+            onClick={handleOpenChatGPT}
+            disabled={!topic.trim()}
             className="w-full bg-purple-600 hover:bg-purple-700"
           >
-            {isGenerating ? (
-              <>
-                <Clock className="h-4 w-4 mr-2 animate-spin" />
-                Generating Quiz...
-              </>
-            ) : (
-              <>
-                <Plus className="h-4 w-4 mr-2" />
-                Generate Quiz
-              </>
-            )}
+            <MessageSquare className="h-4 w-4 mr-2" />
+            Open ChatGPT with Prompt
+            <ExternalLink className="h-4 w-4 ml-2" />
           </Button>
+
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+            <h4 className="text-blue-400 font-medium mb-2">How it works:</h4>
+            <ul className="text-sm text-gray-300 space-y-1">
+              <li>• Click the button above to open ChatGPT with your custom prompt</li>
+              <li>• Copy the generated JSON questions from ChatGPT</li>
+              <li>• Come back here and manually create your quiz session</li>
+              <li>• No API limits or rate limiting!</li>
+            </ul>
+          </div>
         </CardContent>
       </Card>
 
@@ -175,7 +188,7 @@ const QuizSection = () => {
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-8 text-center">
               <Brain className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-              <p className="text-gray-400">No quizzes yet. Create your first quiz above!</p>
+              <p className="text-gray-400">No quizzes yet. Generate questions with ChatGPT above!</p>
             </CardContent>
           </Card>
         )}
