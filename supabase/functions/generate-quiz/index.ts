@@ -76,6 +76,15 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Rate limit exceeded. Please wait a moment before generating another quiz.');
+      }
+      if (response.status === 401) {
+        throw new Error('Invalid OpenAI API key. Please check your API key configuration.');
+      }
+      if (response.status === 403) {
+        throw new Error('OpenAI API access forbidden. Please check your API key permissions.');
+      }
       throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
     }
 
