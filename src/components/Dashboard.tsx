@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from './Header';
 import StatsCards from './StatsCards';
@@ -59,16 +60,18 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       <Header 
         onSearchResults={handleSearchResults} 
         onClearSearch={handleClearSearch}
         activeSection={activeSection}
         onSectionChange={setActiveSection}
       />
-      <div className="flex-1 min-h-0">
-        {renderSection()}
-      </div>
+      <main className="flex-1 overflow-y-auto pb-20">
+        <div className="max-w-7xl mx-auto">
+          {renderSection()}
+        </div>
+      </main>
       <BottomNavigation activeSection={activeSection} onSectionChange={setActiveSection} />
     </div>
   );

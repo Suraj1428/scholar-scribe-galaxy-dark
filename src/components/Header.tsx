@@ -44,72 +44,80 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
 
   return (
     <>
-      <div className="p-4 bg-gray-800 border-b border-gray-700">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-xl font-bold text-white">StudyNotes</h1>
-            <p className="text-gray-400 text-sm">
-              Good morning, {user?.user_metadata?.full_name || user?.email}!
-            </p>
-          </div>
-          <div className="flex items-center space-x-3">
-            {onSectionChange && (
+      <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
+        <div className="p-3 sm:p-4">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold text-white truncate">StudyNotes</h1>
+              <p className="text-gray-400 text-xs sm:text-sm truncate">
+                Good morning, {user?.user_metadata?.full_name || user?.email}!
+              </p>
+            </div>
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+              {onSectionChange && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onSectionChange('compress')}
+                  className={`hidden sm:flex items-center gap-2 ${
+                    activeSection === 'compress' 
+                      ? 'text-purple-400 bg-purple-500/20' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <Minimize2 className="h-4 w-4" />
+                  <span>Compress</span>
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => onSectionChange('compress')}
-                className={`flex items-center gap-2 ${
-                  activeSection === 'compress' 
-                    ? 'text-purple-400 bg-purple-500/20' 
-                    : 'text-gray-400 hover:text-white'
-                }`}
+                className="text-gray-400 hover:text-white p-2"
               >
-                <Minimize2 className="h-4 w-4" />
-                <span className="hidden sm:inline">Compress</span>
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsProfileOpen(true)}
+                className="text-gray-400 hover:text-white p-1"
+              >
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                  <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+                </div>
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={signOut}
+                className="text-gray-400 hover:text-white p-2"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search notes, subjects..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10 pr-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500 h-10 sm:h-11"
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearSearch}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-white"
+              >
+                <X className="h-4 w-4" />
               </Button>
             )}
-            <Bell className="h-6 w-6 text-gray-400" />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsProfileOpen(true)}
-              className="text-gray-400 hover:text-white"
-            >
-              <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                <User className="h-4 w-4 text-white" />
-              </div>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={signOut}
-              className="text-gray-400 hover:text-white"
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
           </div>
         </div>
-        
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input
-            placeholder="Search notes, subjects..."
-            value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="pl-10 pr-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500"
-          />
-          {searchQuery && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearSearch}
-              className="absolute right-1 top-1 h-8 w-8 p-0 text-gray-400 hover:text-white"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      </div>
+      </header>
 
       <ProfileSidebar 
         isOpen={isProfileOpen} 
