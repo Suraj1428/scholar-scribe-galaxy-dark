@@ -17,7 +17,7 @@ export const useOnboarding = () => {
       }
 
       try {
-        const { data, error } = await supabase
+        const { data, error } = await (supabase as any)
           .from('user_preferences')
           .select('onboarding_completed')
           .eq('user_id', user.id)

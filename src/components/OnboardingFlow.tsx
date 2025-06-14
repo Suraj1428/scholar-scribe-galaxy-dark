@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -73,7 +72,7 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('user_preferences')
         .insert({
           user_id: user?.id,
