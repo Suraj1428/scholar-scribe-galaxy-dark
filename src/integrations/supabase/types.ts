@@ -9,6 +9,178 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      challenge_answers: {
+        Row: {
+          answered_at: string | null
+          id: string
+          is_correct: boolean | null
+          participant_id: string
+          question_id: string
+          time_taken: number | null
+          user_answer: string | null
+        }
+        Insert: {
+          answered_at?: string | null
+          id?: string
+          is_correct?: boolean | null
+          participant_id: string
+          question_id: string
+          time_taken?: number | null
+          user_answer?: string | null
+        }
+        Update: {
+          answered_at?: string | null
+          id?: string
+          is_correct?: boolean | null
+          participant_id?: string
+          question_id?: string
+          time_taken?: number | null
+          user_answer?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_answers_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_participants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_participants: {
+        Row: {
+          challenge_session_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          participant_name: string
+          score: number | null
+          total_time: number | null
+          user_id: string | null
+        }
+        Insert: {
+          challenge_session_id: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          participant_name: string
+          score?: number | null
+          total_time?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          challenge_session_id?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          participant_name?: string
+          score?: number | null
+          total_time?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_participants_challenge_session_id_fkey"
+            columns: ["challenge_session_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_questions: {
+        Row: {
+          challenge_session_id: string
+          correct_answer: string
+          created_at: string
+          id: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+          question_order: number
+        }
+        Insert: {
+          challenge_session_id: string
+          correct_answer: string
+          created_at?: string
+          id?: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+          question_order: number
+        }
+        Update: {
+          challenge_session_id?: string
+          correct_answer?: string
+          created_at?: string
+          id?: string
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          question?: string
+          question_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_questions_challenge_session_id_fkey"
+            columns: ["challenge_session_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_sessions: {
+        Row: {
+          created_at: string
+          creator_id: string
+          difficulty: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          time_limit: number | null
+          title: string
+          topic: string
+          total_questions: number
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          difficulty?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          time_limit?: number | null
+          title: string
+          topic: string
+          total_questions: number
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          difficulty?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          time_limit?: number | null
+          title?: string
+          topic?: string
+          total_questions?: number
+        }
+        Relationships: []
+      }
       notes: {
         Row: {
           content: string | null

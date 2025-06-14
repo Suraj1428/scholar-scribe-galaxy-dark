@@ -8,6 +8,7 @@ import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
 import ImageCompressionSection from './ImageCompressionSection';
 import QuizSection from './QuizSection';
+import ChallengeSection from './ChallengeSection';
 import BottomNavigation from './BottomNavigation';
 import SearchResults from './SearchResults';
 
@@ -42,6 +43,8 @@ const Dashboard = () => {
         );
       case 'quiz':
         return <QuizSection />;
+      case 'challenge':
+        return <ChallengeSection />;
       case 'gallery':
         return <GallerySection />;
       case 'book':
