@@ -1,15 +1,17 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, BookOpen, Calendar, Crown } from 'lucide-react';
+import { FileText, BookOpen, Calendar, Crown, Clock, Timer } from 'lucide-react';
 import { useNotes } from '@/hooks/useNotes';
 import { useTasks } from '@/hooks/useTasks';
 import { useStreakData } from '@/hooks/useStreakData';
+import { useSessionTimer } from '@/hooks/useSessionTimer';
 
 const StatsCards = () => {
   const { notes } = useNotes();
   const { tasks } = useTasks();
   const { currentStreak } = useStreakData();
+  const { currentSessionTime, longestSession, formatTime } = useSessionTimer();
 
   const subjects = new Set(notes.map(note => note.subject)).size;
 
@@ -41,6 +43,20 @@ const StatsCards = () => {
       icon: Crown,
       color: 'text-purple-400',
       bgColor: 'bg-purple-500/20'
+    },
+    {
+      title: 'Present Time',
+      value: formatTime(currentSessionTime),
+      icon: Timer,
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-500/20'
+    },
+    {
+      title: 'Longest Slot',
+      value: formatTime(longestSession),
+      icon: Clock,
+      color: 'text-pink-400',
+      bgColor: 'bg-pink-500/20'
     }
   ];
 
