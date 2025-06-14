@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { FileText, Image, BookOpen, CheckSquare } from 'lucide-react';
+import { FileText, Image, BookOpen, CheckSquare, Compress } from 'lucide-react';
 
 interface BottomNavigationProps {
   activeSection: string;
@@ -13,7 +13,8 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
     { id: 'notes', label: 'Notes', icon: FileText },
     { id: 'gallery', label: 'Gallery', icon: Image },
     { id: 'book', label: 'Book View', icon: BookOpen },
-    { id: 'tasks', label: 'Tasks', icon: CheckSquare }
+    { id: 'tasks', label: 'Tasks', icon: CheckSquare },
+    { id: 'compress', label: 'Compress', icon: Compress }
   ];
 
   return (

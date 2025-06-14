@@ -7,6 +7,7 @@ import NotesSection from './NotesSection';
 import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
 import TaskManager from './TaskManager';
+import ImageCompressionSection from './ImageCompressionSection';
 import BottomNavigation from './BottomNavigation';
 import SearchResults from './SearchResults';
 
@@ -45,6 +46,8 @@ const Dashboard = () => {
         return <BookViewSection />;
       case 'tasks':
         return <TaskManager />;
+      case 'compress':
+        return <ImageCompressionSection />;
       default:
         return (
           <div className="space-y-4 sm:space-y-6">
