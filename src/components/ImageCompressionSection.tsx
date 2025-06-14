@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Compress, Upload, Download, Image as ImageIcon } from 'lucide-react';
+import { Minimize2, Upload, Download, Image as ImageIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 const ImageCompressionSection = () => {
@@ -113,7 +113,7 @@ const ImageCompressionSection = () => {
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center gap-2 mb-6">
-        <Compress className="h-6 w-6 text-purple-400" />
+        <Minimize2 className="h-6 w-6 text-purple-400" />
         <h2 className="text-xl font-bold text-white">Image Compression Tool</h2>
       </div>
 

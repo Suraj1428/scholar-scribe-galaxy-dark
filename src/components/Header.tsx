@@ -2,16 +2,18 @@
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Bell, User, LogOut, X } from 'lucide-react';
+import { Search, Bell, User, LogOut, X, Minimize2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotes } from '@/hooks/useNotes';
 
 interface HeaderProps {
   onSearchResults?: (results: any[]) => void;
   onClearSearch?: () => void;
+  activeSection?: string;
+  onSectionChange?: (section: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch }) => {
+const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeSection, onSectionChange }) => {
   const { user, signOut } = useAuth();
   const { notes } = useNotes();
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,6 +50,21 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch }) => {
           </p>
         </div>
         <div className="flex items-center space-x-3">
+          {onSectionChange && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onSectionChange('compress')}
+              className={`flex items-center gap-2 ${
+                activeSection === 'compress' 
+                  ? 'text-purple-400 bg-purple-500/20' 
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <Minimize2 className="h-4 w-4" />
+              <span className="hidden sm:inline">Compress</span>
+            </Button>
+          )}
           <Bell className="h-6 w-6 text-gray-400" />
           <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
             <User className="h-4 w-4 text-white" />
