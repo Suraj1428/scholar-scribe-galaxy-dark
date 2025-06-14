@@ -72,6 +72,89 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_questions: {
+        Row: {
+          correct_answer: string
+          created_at: string
+          id: string
+          is_correct: boolean | null
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+          quiz_session_id: string
+          user_answer: string | null
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean | null
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+          quiz_session_id: string
+          user_answer?: string | null
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean | null
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          question?: string
+          quiz_session_id?: string
+          user_answer?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_quiz_session_id_fkey"
+            columns: ["quiz_session_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_sessions: {
+        Row: {
+          completed: boolean | null
+          created_at: string
+          difficulty: string | null
+          id: string
+          score: number | null
+          topic: string
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string
+          difficulty?: string | null
+          id?: string
+          score?: number | null
+          topic: string
+          total_questions: number
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string
+          difficulty?: string | null
+          id?: string
+          score?: number | null
+          topic?: string
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       streak_data: {
         Row: {
           date: string

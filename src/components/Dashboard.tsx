@@ -8,6 +8,7 @@ import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
 import TaskManager from './TaskManager';
 import ImageCompressionSection from './ImageCompressionSection';
+import QuizSection from './QuizSection';
 import BottomNavigation from './BottomNavigation';
 import SearchResults from './SearchResults';
 
@@ -40,6 +41,8 @@ const Dashboard = () => {
             <NotesSection />
           </div>
         );
+      case 'quiz':
+        return <QuizSection />;
       case 'gallery':
         return <GallerySection />;
       case 'book':
