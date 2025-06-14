@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -248,7 +247,7 @@ const BookViewSection = () => {
               <form onSubmit={handlePromoSubmit} className="space-y-3">
                 <input
                   type="text"
-                  placeholder="Enter promo code (SURAJ28 for free premium!)"
+                  placeholder="Have a promo code? Enter it here"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
                   className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
