@@ -18,6 +18,12 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Starting quiz generation...');
+    
+    if (!openAIApiKey) {
+      throw new Error('OpenAI API key not configured');
+    }
+
     const authHeader = req.headers.get('Authorization')!;
     const supabase = createClient(supabaseUrl, supabaseKey, {
       global: { headers: { Authorization: authHeader } }
@@ -29,6 +35,7 @@ serve(async (req) => {
     }
 
     const { topic, difficulty = 'medium', questionCount = 5 } = await req.json();
+    console.log('Quiz request:', { topic, difficulty, questionCount });
 
     const prompt = `Generate ${questionCount} multiple choice questions about "${topic}" with ${difficulty} difficulty level.
 
@@ -51,6 +58,7 @@ serve(async (req) => {
     - Use clear, concise language
     - Return only valid JSON, no extra text`;
 
+    console.log('Calling OpenAI API...');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -67,16 +75,35 @@ serve(async (req) => {
       }),
     });
 
+    if (!response.ok) {
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    }
+
     const data = await response.json();
+    console.log('OpenAI response received');
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Invalid OpenAI response structure:', data);
+      throw new Error('Invalid response from OpenAI');
+    }
+    
     const generatedContent = data.choices[0].message.content;
+    console.log('Generated content:', generatedContent);
     
     let questions;
     try {
       questions = JSON.parse(generatedContent);
     } catch (e) {
+      console.error('Failed to parse generated questions:', e);
+      console.error('Raw content:', generatedContent);
       throw new Error('Failed to parse generated questions');
     }
 
+    if (!Array.isArray(questions)) {
+      throw new Error('Generated content is not an array');
+    }
+
+    console.log('Creating quiz session...');
     // Create quiz session
     const { data: session, error: sessionError } = await supabase
       .from('quiz_sessions')
@@ -89,8 +116,12 @@ serve(async (req) => {
       .select()
       .single();
 
-    if (sessionError) throw sessionError;
+    if (sessionError) {
+      console.error('Session creation error:', sessionError);
+      throw sessionError;
+    }
 
+    console.log('Inserting questions...');
     // Insert questions
     const questionsToInsert = questions.map((q: any) => ({
       quiz_session_id: session.id,
@@ -106,8 +137,12 @@ serve(async (req) => {
       .from('quiz_questions')
       .insert(questionsToInsert);
 
-    if (questionsError) throw questionsError;
+    if (questionsError) {
+      console.error('Questions insertion error:', questionsError);
+      throw questionsError;
+    }
 
+    console.log('Quiz generation successful!');
     return new Response(JSON.stringify({ 
       session_id: session.id,
       questions: questions.length 
