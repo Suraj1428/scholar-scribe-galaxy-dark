@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Bell, User, LogOut, X, Minimize2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotes } from '@/hooks/useNotes';
+import { useUserPreferences } from '@/hooks/useUserPreferences';
 import ProfileSidebar from './ProfileSidebar';
 
 interface HeaderProps {
@@ -16,6 +18,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeSection, onSectionChange }) => {
   const { user, signOut } = useAuth();
   const { notes } = useNotes();
+  const { preferences } = useUserPreferences();
   const [searchQuery, setSearchQuery] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [greeting, setGreeting] = useState('');
@@ -68,6 +71,19 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
     onClearSearch?.();
   };
 
+  const getExamDisplayName = (examType: string) => {
+    const examMap: { [key: string]: string } = {
+      'upsc': 'UPSC',
+      'gate': 'GATE', 
+      'ssc': 'SSC',
+      'neet': 'NEET',
+      'jee': 'JEE',
+      'cat': 'CAT',
+      'other': 'Custom Exam'
+    };
+    return examMap[examType] || examType.toUpperCase();
+  };
+
   return (
     <>
       <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
@@ -78,6 +94,11 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               <p className="text-gray-400 text-xs sm:text-sm truncate">
                 {greeting}, {user?.user_metadata?.full_name || user?.email}!
               </p>
+              {preferences?.exam_type && (
+                <p className="text-purple-400 text-xs sm:text-sm font-medium truncate">
+                  Preparing for {getExamDisplayName(preferences.exam_type)}
+                </p>
+              )}
             </div>
             <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
               {onSectionChange && (
