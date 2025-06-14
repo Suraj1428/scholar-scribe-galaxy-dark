@@ -47,7 +47,9 @@ export const useNotes = () => {
     
     const { data, error } = await supabase.storage
       .from('notes-files')
-      .upload(fileName, file);
+      .upload(fileName, file, {
+        upsert: false
+      });
 
     if (error) throw error;
 
@@ -56,6 +58,70 @@ export const useNotes = () => {
       .getPublicUrl(fileName);
 
     return urlData.publicUrl;
+  };
+
+  const deleteNote = async (noteId: string) => {
+    if (!user) return;
+
+    try {
+      // First get the note to check if it has a file
+      const { data: note } = await supabase
+        .from('notes')
+        .select('file_url')
+        .eq('id', noteId)
+        .eq('user_id', user.id)
+        .single();
+
+      // Delete the file from storage if it exists
+      if (note?.file_url) {
+        const fileName = note.file_url.split('/').pop();
+        if (fileName) {
+          await supabase.storage
+            .from('notes-files')
+            .remove([`${user.id}/${fileName}`]);
+        }
+      }
+
+      // Delete the note from database
+      const { error } = await supabase
+        .from('notes')
+        .delete()
+        .eq('id', noteId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setNotes(prev => prev.filter(note => note.id !== noteId));
+      
+      toast({
+        title: "Note Deleted",
+        description: "The note has been deleted successfully.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete note",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const updateStreakData = async () => {
+    if (!user) return;
+
+    // Get current date in Indian timezone (IST)
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+    const istDate = new Date(now.getTime() + istOffset);
+    const dateString = istDate.toISOString().split('T')[0];
+
+    await supabase
+      .from('streak_data')
+      .upsert({
+        user_id: user.id,
+        date: dateString,
+        uploaded: true
+      });
   };
 
   const createNote = async (title: string, file?: File, content?: string, subject?: string) => {
@@ -91,7 +157,13 @@ export const useNotes = () => {
 
       if (file) {
         fileUrl = await uploadFile(file, user.id);
-        fileType = file.type.startsWith('image/') ? 'image' : 'pdf';
+        if (file.type.startsWith('image/')) {
+          fileType = 'image';
+        } else if (file.type === 'application/pdf') {
+          fileType = 'pdf';
+        } else {
+          fileType = 'file';
+        }
       }
 
       const { data, error } = await supabase
@@ -111,14 +183,8 @@ export const useNotes = () => {
 
       setNotes(prev => [data, ...prev]);
       
-      // Update streak data
-      await supabase
-        .from('streak_data')
-        .upsert({
-          user_id: user.id,
-          date: new Date().toISOString().split('T')[0],
-          uploaded: true
-        });
+      // Update streak data with IST timezone
+      await updateStreakData();
 
       toast({
         title: "Note Created!",
@@ -145,6 +211,7 @@ export const useNotes = () => {
     notes,
     loading,
     createNote,
+    deleteNote,
     fetchNotes
   };
 };

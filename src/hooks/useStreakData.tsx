@@ -10,6 +10,13 @@ export const useStreakData = () => {
   const [todayUploaded, setTodayUploaded] = useState(false);
   const { user } = useAuth();
 
+  const getISTDate = () => {
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+    const istDate = new Date(now.getTime() + istOffset);
+    return istDate.toISOString().split('T')[0];
+  };
+
   const fetchStreakData = async () => {
     if (!user) return;
 
@@ -22,16 +29,17 @@ export const useStreakData = () => {
 
       if (error) throw error;
 
-      const today = new Date().toISOString().split('T')[0];
+      const today = getISTDate();
       const todayData = data?.find(d => d.date === today);
       setTodayUploaded(todayData?.uploaded || false);
 
-      // Calculate streak
+      // Calculate current streak from today backwards
       let current = 0;
       let highest = 0;
       let temp = 0;
 
-      data?.forEach((day, index) => {
+      // Calculate highest streak
+      data?.forEach((day) => {
         if (day.uploaded) {
           temp++;
           if (temp > highest) highest = temp;
@@ -53,7 +61,7 @@ export const useStreakData = () => {
       setCurrentStreak(current);
       setHighestStreak(highest);
 
-      // Format data for chart
+      // Format data for chart (last 30 days)
       const chartData = data?.slice(-30).map((day, index) => ({
         day: new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         streak: index + 1

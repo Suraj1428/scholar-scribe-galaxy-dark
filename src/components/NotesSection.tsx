@@ -3,20 +3,18 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Upload, FileText, Image as ImageIcon } from 'lucide-react';
+import { Plus, Upload, FileText, Image as ImageIcon, Trash2, File } from 'lucide-react';
 import { useNotes } from '@/hooks/useNotes';
 import { usePremium } from '@/hooks/usePremium';
 
 const NotesSection = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState('');
-  const [subject, setSubject] = useState('General');
+  const [subject, setSubject] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const { notes, createNote } = useNotes();
+  const { notes, createNote, deleteNote } = useNotes();
   const { isPremium } = usePremium();
 
-  // Get existing subjects for the dropdown
   const existingSubjects = Array.from(new Set(notes.map(note => note.subject).filter(Boolean)));
   const imageNotes = notes.filter(note => note.file_type === 'image');
 
@@ -24,10 +22,11 @@ const NotesSection = () => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    const result = await createNote(title, file, '', subject);
+    const subjectName = subject.trim() || 'General';
+    const result = await createNote(title, file, '', subjectName);
     if (result) {
       setTitle('');
-      setSubject('General');
+      setSubject('');
       setFile(null);
       setIsCreating(false);
     }
@@ -36,8 +35,23 @@ const NotesSection = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
+      const maxSize = 50 * 1024 * 1024; // 50MB limit
+      if (selectedFile.size > maxSize) {
+        alert('File size must be less than 50MB');
+        return;
+      }
       setFile(selectedFile);
     }
+  };
+
+  const handleDelete = async (noteId: string) => {
+    if (confirm('Are you sure you want to delete this note?')) {
+      await deleteNote(noteId);
+    }
+  };
+
+  const openPDF = (url: string) => {
+    window.open(url, '_blank');
   };
 
   return (
@@ -78,41 +92,24 @@ const NotesSection = () => {
               </div>
               
               <div>
-                <Select value={subject} onValueChange={setSubject}>
-                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                    <SelectValue placeholder="Select subject" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="General">General</SelectItem>
-                    {existingSubjects.filter(s => s !== 'General').map(subjectName => (
-                      <SelectItem key={subjectName} value={subjectName}>
-                        {subjectName}
-                      </SelectItem>
-                    ))}
-                    {(isPremium || existingSubjects.length < 2) && (
-                      <SelectItem value="__new__">+ Add New Subject</SelectItem>
-                    )}
-                  </SelectContent>
-                </Select>
-                
-                {subject === '__new__' && (
-                  <Input
-                    placeholder="Enter new subject name..."
-                    onChange={(e) => setSubject(e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 mt-2"
-                  />
-                )}
+                <Input
+                  placeholder="Subject name (e.g., Mathematics, History, Science...)"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                />
+                <p className="text-gray-400 text-xs mt-1">Leave empty to use 'General' as subject</p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Upload Image
+                  Upload File (Image or PDF)
                 </label>
                 <div className="flex items-center gap-2">
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    accept="image/*"
+                    accept="image/*,application/pdf"
                     className="hidden"
                     id="file-upload"
                   />
@@ -121,15 +118,20 @@ const NotesSection = () => {
                     className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded cursor-pointer text-white"
                   >
                     <Upload className="h-4 w-4" />
-                    Choose Image
+                    Choose File
                   </label>
                   {file && (
                     <div className="flex items-center gap-2 text-sm text-gray-300">
-                      <ImageIcon className="h-4 w-4" />
+                      {file.type.startsWith('image/') ? (
+                        <ImageIcon className="h-4 w-4" />
+                      ) : (
+                        <File className="h-4 w-4" />
+                      )}
                       {file.name}
                     </div>
                   )}
                 </div>
+                <p className="text-gray-400 text-xs mt-1">Max file size: 50MB</p>
               </div>
 
               <div className="flex gap-2">
@@ -142,7 +144,7 @@ const NotesSection = () => {
                   onClick={() => {
                     setIsCreating(false);
                     setTitle('');
-                    setSubject('General');
+                    setSubject('');
                     setFile(null);
                   }}
                   className="border-gray-600 text-gray-300"
@@ -155,7 +157,6 @@ const NotesSection = () => {
         </Card>
       )}
 
-      {/* Display existing notes */}
       <div className="space-y-4">
         {notes.length === 0 ? (
           <Card className="bg-gray-800 border-gray-700">
@@ -186,13 +187,33 @@ const NotesSection = () => {
                       <img 
                         src={note.file_url} 
                         alt={note.title}
-                        className="mt-2 max-w-xs rounded border border-gray-600"
+                        className="mt-2 max-w-xs rounded border border-gray-600 cursor-pointer hover:opacity-80"
                       />
                     )}
-                    <p className="text-gray-400 text-xs">
+                    {note.file_url && note.file_type === 'pdf' && (
+                      <div className="mt-2">
+                        <Button
+                          onClick={() => openPDF(note.file_url!)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          size="sm"
+                        >
+                          <File className="h-4 w-4 mr-2" />
+                          Open PDF
+                        </Button>
+                      </div>
+                    )}
+                    <p className="text-gray-400 text-xs mt-2">
                       {new Date(note.created_at).toLocaleString()}
                     </p>
                   </div>
+                  <Button
+                    onClick={() => handleDelete(note.id)}
+                    variant="outline"
+                    size="sm"
+                    className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white ml-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>

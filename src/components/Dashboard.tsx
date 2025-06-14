@@ -8,11 +8,28 @@ import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
 import TaskManager from './TaskManager';
 import BottomNavigation from './BottomNavigation';
+import SearchResults from './SearchResults';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('notes');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearchResults = (results: any[]) => {
+    setSearchResults(results);
+    setIsSearching(true);
+  };
+
+  const handleClearSearch = () => {
+    setSearchResults([]);
+    setIsSearching(false);
+  };
 
   const renderSection = () => {
+    if (isSearching) {
+      return <SearchResults results={searchResults} />;
+    }
+
     switch (activeSection) {
       case 'notes':
         return (
@@ -41,7 +58,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
+      <Header onSearchResults={handleSearchResults} onClearSearch={handleClearSearch} />
       <div className="flex-1 min-h-0">
         {renderSection()}
       </div>
