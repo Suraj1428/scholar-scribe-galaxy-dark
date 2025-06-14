@@ -6,7 +6,6 @@ import StreakTracker from './StreakTracker';
 import NotesSection from './NotesSection';
 import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
-import TaskManager from './TaskManager';
 import ImageCompressionSection from './ImageCompressionSection';
 import QuizSection from './QuizSection';
 import BottomNavigation from './BottomNavigation';
@@ -47,8 +46,6 @@ const Dashboard = () => {
         return <GallerySection />;
       case 'book':
         return <BookViewSection />;
-      case 'tasks':
-        return <TaskManager />;
       case 'compress':
         return <ImageCompressionSection />;
       default:
