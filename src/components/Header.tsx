@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Bell, User, LogOut, X, Minimize2 } from 'lucide-react';
@@ -19,6 +18,33 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
   const { notes } = useNotes();
   const [searchQuery, setSearchQuery] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [greeting, setGreeting] = useState('');
+
+  // Update greeting based on current time
+  useEffect(() => {
+    const updateGreeting = () => {
+      const now = new Date();
+      const hour = now.getHours();
+      
+      if (hour >= 5 && hour < 12) {
+        setGreeting('Good morning');
+      } else if (hour >= 12 && hour < 17) {
+        setGreeting('Good afternoon');
+      } else if (hour >= 17 && hour < 21) {
+        setGreeting('Good evening');
+      } else {
+        setGreeting('Good night');
+      }
+    };
+
+    // Update greeting immediately
+    updateGreeting();
+    
+    // Update greeting every minute
+    const interval = setInterval(updateGreeting, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -50,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
             <div className="flex-1 min-w-0">
               <h1 className="text-lg sm:text-xl font-bold text-white truncate">StudyNotes</h1>
               <p className="text-gray-400 text-xs sm:text-sm truncate">
-                Good morning, {user?.user_metadata?.full_name || user?.email}!
+                {greeting}, {user?.user_metadata?.full_name || user?.email}!
               </p>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
