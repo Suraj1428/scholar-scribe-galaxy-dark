@@ -22,6 +22,13 @@ export const useSessionTimer = () => {
       const currentTime = Date.now();
       const sessionDuration = Math.floor((currentTime - startTime) / 1000);
       setCurrentSessionTime(sessionDuration);
+      
+      // Real-time check if current session is becoming the longest
+      const savedLongest = parseInt(localStorage.getItem('longestSession') || '0');
+      if (sessionDuration > savedLongest) {
+        setLongestSession(sessionDuration);
+        localStorage.setItem('longestSession', sessionDuration.toString());
+      }
     }, 1000);
 
     // Cleanup function to save session when component unmounts or user leaves
@@ -29,7 +36,9 @@ export const useSessionTimer = () => {
       const endTime = Date.now();
       const sessionDuration = Math.floor((endTime - startTime) / 1000);
       
-      if (sessionDuration > longestSession) {
+      // Only save if this session is longer than the current record
+      const currentLongest = parseInt(localStorage.getItem('longestSession') || '0');
+      if (sessionDuration > currentLongest) {
         localStorage.setItem('longestSession', sessionDuration.toString());
       }
     };
