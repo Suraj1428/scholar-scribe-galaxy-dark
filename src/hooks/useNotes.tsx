@@ -19,12 +19,20 @@ export interface Note {
 export const useNotes = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const { isPremium } = usePremium();
   const { toast } = useToast();
 
   const fetchNotes = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('No user found, skipping notes fetch');
+      setLoading(false);
+      return;
+    }
+    
+    console.log('Fetching notes for user:', user.id);
+    setError(null);
     
     try {
       const { data, error } = await supabase
@@ -33,10 +41,23 @@ export const useNotes = () => {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error fetching notes:', error);
+        setError(`Failed to load notes: ${error.message}`);
+        throw error;
+      }
+      
+      console.log('Notes fetched successfully:', data?.length || 0);
       setNotes(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching notes:', error);
+      setError(error.message || 'Failed to load notes');
+      
+      toast({
+        title: "Connection Error",
+        description: "Unable to load notes. Please check your internet connection and try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -125,7 +146,16 @@ export const useNotes = () => {
   };
 
   const createNote = async (title: string, file?: File, content?: string, subject?: string) => {
-    if (!user) return;
+    if (!user) {
+      toast({
+        title: "Authentication Error",
+        description: "You must be logged in to create notes.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    console.log('Creating note:', { title, hasFile: !!file, subject });
 
     try {
       // Check limits for free users
@@ -156,6 +186,7 @@ export const useNotes = () => {
       let fileType = '';
 
       if (file) {
+        console.log('Uploading file:', file.name);
         fileUrl = await uploadFile(file, user.id);
         if (file.type.startsWith('image/')) {
           fileType = 'image';
@@ -164,23 +195,32 @@ export const useNotes = () => {
         } else {
           fileType = 'file';
         }
+        console.log('File uploaded successfully:', fileUrl);
       }
+
+      const noteData = {
+        user_id: user.id,
+        title,
+        content: content || '',
+        file_url: fileUrl,
+        file_type: fileType || 'text',
+        subject: subject || 'General'
+      };
+
+      console.log('Inserting note data:', noteData);
 
       const { data, error } = await supabase
         .from('notes')
-        .insert({
-          user_id: user.id,
-          title,
-          content: content || '',
-          file_url: fileUrl,
-          file_type: fileType || 'text',
-          subject: subject || 'General'
-        })
+        .insert(noteData)
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error inserting note:', error);
+        throw error;
+      }
 
+      console.log('Note created successfully:', data);
       setNotes(prev => [data, ...prev]);
       
       // Update streak data with IST timezone
@@ -193,6 +233,7 @@ export const useNotes = () => {
 
       return data;
     } catch (error: any) {
+      console.error('Error creating note:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to create note",
@@ -202,14 +243,19 @@ export const useNotes = () => {
   };
 
   useEffect(() => {
+    console.log('useNotes effect triggered, user:', user?.id);
     if (user) {
       fetchNotes();
+    } else {
+      setLoading(false);
+      setNotes([]);
     }
   }, [user]);
 
   return {
     notes,
     loading,
+    error,
     createNote,
     deleteNote,
     fetchNotes

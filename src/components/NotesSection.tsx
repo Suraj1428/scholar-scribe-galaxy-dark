@@ -3,20 +3,29 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Upload, FileText, Image as ImageIcon, Trash2, File } from 'lucide-react';
+import { Plus, Upload, FileText, Image as ImageIcon, Trash2, File, AlertCircle, Loader2 } from 'lucide-react';
 import { useNotes } from '@/hooks/useNotes';
 import { usePremium } from '@/hooks/usePremium';
+import { useAuth } from '@/hooks/useAuth';
 
 const NotesSection = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const { notes, createNote, deleteNote } = useNotes();
+  const { notes, createNote, deleteNote, loading, error, fetchNotes } = useNotes();
   const { isPremium } = usePremium();
+  const { user } = useAuth();
 
   const existingSubjects = Array.from(new Set(notes.map(note => note.subject).filter(Boolean)));
   const imageNotes = notes.filter(note => note.file_type === 'image');
+
+  console.log('NotesSection render:', { 
+    user: user?.id, 
+    loading, 
+    error, 
+    notesCount: notes.length 
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +62,68 @@ const NotesSection = () => {
   const openPDF = (url: string) => {
     window.open(url, '_blank');
   };
+
+  const handleRetry = () => {
+    console.log('Retrying to fetch notes...');
+    fetchNotes();
+  };
+
+  // Show authentication message if no user
+  if (!user) {
+    return (
+      <div className="p-4 space-y-6">
+        <Card className="bg-gray-800 border-gray-700">
+          <CardContent className="p-8 text-center">
+            <AlertCircle className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
+            <h3 className="text-white font-semibold mb-2">Authentication Required</h3>
+            <p className="text-gray-400 text-sm">Please log in to access your notes.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="p-4 space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-white">Notes</h2>
+        </div>
+        <Card className="bg-gray-800 border-gray-700">
+          <CardContent className="p-8 text-center">
+            <Loader2 className="h-16 w-16 text-purple-400 mx-auto mb-4 animate-spin" />
+            <h3 className="text-white font-semibold mb-2">Loading Notes...</h3>
+            <p className="text-gray-400 text-sm">Please wait while we load your notes.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show error state with retry option
+  if (error) {
+    return (
+      <div className="p-4 space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-white">Notes</h2>
+        </div>
+        <Card className="bg-gray-800 border-gray-700">
+          <CardContent className="p-8 text-center">
+            <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+            <h3 className="text-white font-semibold mb-2">Failed to Load Notes</h3>
+            <p className="text-gray-400 text-sm mb-4">{error}</p>
+            <Button 
+              onClick={handleRetry}
+              className="bg-purple-600 hover:bg-purple-700"
+            >
+              Try Again
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 space-y-6">
