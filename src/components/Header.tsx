@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, LogOut, X, Minimize2, Target, Crown } from 'lucide-react';
+import { Search, LogOut, X, Target, Crown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotes } from '@/hooks/useNotes';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
@@ -136,21 +136,6 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               </p>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-              {onSectionChange && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onSectionChange('compress')}
-                  className={`hidden sm:flex items-center gap-2 ${
-                    activeSection === 'compress' 
-                      ? 'text-purple-400 bg-purple-500/20' 
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  <Minimize2 className="h-4 w-4" />
-                  <span>Compress</span>
-                </Button>
-              )}
               {preferences?.exam_type && (
                 <Button
                   variant="ghost"
