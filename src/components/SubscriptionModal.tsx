@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Crown, Star, Check, Loader2 } from 'lucide-react';
 import { usePremium } from '@/hooks/usePremium';
 
@@ -74,7 +73,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-3xl font-bold text-white">
-                $49.99
+                ₹149
                 <span className="text-sm font-normal text-gray-400 ml-2">one-time</span>
               </div>
               
@@ -138,11 +137,6 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose }
                   'Apply'
                 )}
               </Button>
-            </div>
-            <div className="text-center">
-              <Badge variant="outline" className="border-yellow-400 text-yellow-400 text-xs">
-                Try code: SURAJ28
-              </Badge>
             </div>
           </div>
         </div>
