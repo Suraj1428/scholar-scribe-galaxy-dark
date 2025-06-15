@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -112,14 +111,16 @@ Rules:
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-white mb-2">AI Quiz System</h2>
-        <p className="text-gray-400">Create quizzes, track performance, and improve your learning</p>
+        <p className="text-gray-400">
+          <span className="bg-red-500 text-white px-2 py-1 rounded">Create quizzes</span>, <span className="bg-red-500 text-white px-2 py-1 rounded">track performance</span>, and improve your learning
+        </p>
       </div>
 
       <Tabs defaultValue="create" className="w-full">
         <TabsList className="grid w-full grid-cols-4 bg-gray-700">
           <TabsTrigger value="create" className="data-[state=active]:bg-purple-600">
             <Brain className="h-4 w-4 mr-2" />
-            Create Quiz
+            <span className="bg-red-500 text-white px-2 py-1 rounded">Create New Quiz</span> with ChatGPT
           </TabsTrigger>
           <TabsTrigger value="multi-subject" className="data-[state=active]:bg-purple-600">
             <BookOpen className="h-4 w-4 mr-2" />
@@ -141,7 +142,7 @@ Rules:
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Brain className="h-5 w-5 text-purple-400" />
-                Create New Quiz with ChatGPT
+                <span className="bg-red-500 text-white px-2 py-1 rounded">Create New Quiz</span> with ChatGPT
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">

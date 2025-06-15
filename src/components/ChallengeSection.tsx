@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -89,7 +88,9 @@ const ChallengeSection = () => {
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-white mb-2">Quiz Challenges</h2>
-              <p className="text-gray-400">Create competitive quizzes and challenge your friends!</p>
+              <p className="text-gray-400">
+                <span className="bg-red-500 text-white px-2 py-1 rounded">Create competitive quizzes</span> and <span className="bg-red-500 text-white px-2 py-1 rounded">challenge your friends!</span>
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,7 +99,9 @@ const ChallengeSection = () => {
                   <div className="mx-auto mb-4 p-4 bg-purple-500/20 rounded-full w-fit">
                     <Plus className="h-8 w-8 text-purple-400" />
                   </div>
-                  <CardTitle className="text-white">Create Challenge</CardTitle>
+                  <CardTitle className="text-white">
+                    <span className="bg-red-500 text-white px-2 py-1 rounded">Create Challenge</span>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-gray-400 mb-4">
@@ -119,7 +122,9 @@ const ChallengeSection = () => {
                   <div className="mx-auto mb-4 p-4 bg-blue-500/20 rounded-full w-fit">
                     <Trophy className="h-8 w-8 text-blue-400" />
                   </div>
-                  <CardTitle className="text-white">Join Challenge</CardTitle>
+                  <CardTitle className="text-white">
+                    <span className="bg-red-500 text-white px-2 py-1 rounded">Join Challenge</span>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-gray-400 mb-4">
@@ -149,7 +154,7 @@ const ChallengeSection = () => {
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Target className="h-5 w-5 text-green-400" />
-                  How Challenges Work
+                  <span className="bg-red-500 text-white px-2 py-1 rounded">How Challenges Work</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
