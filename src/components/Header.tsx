@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -133,13 +132,9 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
             <div className="flex-1 min-w-0 max-w-full">
               <div className="flex items-center gap-2 mb-1 border border-white rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full">
                 <h1 className="text-base sm:text-lg md:text-xl font-bold text-white whitespace-nowrap">StudySmart</h1>
-                <span className="text-gray-400 text-sm">•</span>
-                <p className="text-gray-400 text-xs sm:text-sm whitespace-nowrap">
-                  {greeting}
-                </p>
               </div>
-              <p className="text-gray-400 text-xs sm:text-sm truncate max-w-full">
-                {user?.user_metadata?.full_name || user?.email}
+              <p className="text-gray-400 text-sm sm:text-base truncate max-w-full">
+                {greeting}
               </p>
             </div>
             <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
