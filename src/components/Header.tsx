@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -147,7 +148,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                   title={`Click to visit ${getExamDisplayName(preferences.exam_type)} official website`}
                 >
                   <Target className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" />
-                  <span className="font-medium whitespace-nowrap hidden xs:inline">
+                  <span className="font-medium whitespace-nowrap">
                     {getExamDisplayName(preferences.exam_type)}
                   </span>
                 </Button>
