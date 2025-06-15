@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -78,9 +77,17 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
       'upsc': 'UPSC',
       'gate': 'GATE', 
       'ssc': 'SSC',
+      'rrb': 'RRB Railway',
       'neet': 'NEET',
       'jee': 'JEE',
       'cat': 'CAT',
+      'ibps': 'IBPS',
+      'nda': 'NDA',
+      'cds': 'CDS',
+      'capf': 'CAPF',
+      'afcat': 'AFCAT',
+      'clat': 'CLAT',
+      'net': 'UGC NET',
       'other': 'Custom Exam'
     };
     return examMap[examType] || examType.toUpperCase();
@@ -94,9 +101,17 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
     { value: 'upsc', label: 'UPSC', website: 'https://www.upsc.gov.in/' },
     { value: 'gate', label: 'GATE', website: 'https://gate.iitg.ac.in/' },
     { value: 'ssc', label: 'SSC', website: 'https://ssc.nic.in/' },
+    { value: 'rrb', label: 'RRB Railway', website: 'https://www.rrbcdg.gov.in/' },
     { value: 'neet', label: 'NEET', website: 'https://neet.nta.nic.in/' },
     { value: 'jee', label: 'JEE', website: 'https://jeemain.nta.nic.in/' },
     { value: 'cat', label: 'CAT', website: 'https://iimcat.ac.in/' },
+    { value: 'ibps', label: 'IBPS', website: 'https://www.ibps.in/' },
+    { value: 'nda', label: 'NDA', website: 'https://www.upsc.gov.in/examinations/active-examinations/national-defence-academy-naval-academy-examination-i' },
+    { value: 'cds', label: 'CDS', website: 'https://www.upsc.gov.in/examinations/active-examinations/combined-defence-services-examination-i' },
+    { value: 'capf', label: 'CAPF', website: 'https://www.upsc.gov.in/examinations/active-examinations/central-armed-police-forces-assistant-commandant' },
+    { value: 'afcat', label: 'AFCAT', website: 'https://afcat.cdac.in/' },
+    { value: 'clat', label: 'CLAT', website: 'https://consortiumofnlus.ac.in/' },
+    { value: 'net', label: 'UGC NET', website: 'https://ugcnet.nta.nic.in/' },
     { value: 'other', label: 'Other', website: null }
   ];
 
