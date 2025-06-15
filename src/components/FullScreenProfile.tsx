@@ -8,7 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   X, User, Camera, Trophy, TrendingUp, Target, Calendar, 
-  BookOpen, Brain, Clock, Award, BarChart3, Zap, Settings 
+  BookOpen, Brain, Clock, Award, BarChart3, Zap, Settings, ExternalLink 
 } from 'lucide-react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { QuizAnalytics } from '@/hooks/useQuizAnalytics';
@@ -53,13 +53,13 @@ const FullScreenProfile = ({
   const { toast } = useToast();
   
   const examTypes = [
-    { value: 'upsc', label: 'UPSC' },
-    { value: 'gate', label: 'GATE' },
-    { value: 'ssc', label: 'SSC' },
-    { value: 'neet', label: 'NEET' },
-    { value: 'jee', label: 'JEE' },
-    { value: 'cat', label: 'CAT' },
-    { value: 'other', label: 'Other' }
+    { value: 'upsc', label: 'UPSC', website: 'https://www.upsc.gov.in/' },
+    { value: 'gate', label: 'GATE', website: 'https://gate.iitg.ac.in/' },
+    { value: 'ssc', label: 'SSC', website: 'https://ssc.nic.in/' },
+    { value: 'neet', label: 'NEET', website: 'https://neet.nta.nic.in/' },
+    { value: 'jee', label: 'JEE', website: 'https://jeemain.nta.nic.in/' },
+    { value: 'cat', label: 'CAT', website: 'https://iimcat.ac.in/' },
+    { value: 'other', label: 'Other', website: null }
   ];
 
   const handleExamPreferenceUpdate = async () => {
@@ -107,6 +107,13 @@ const FullScreenProfile = ({
       });
     } finally {
       setIsUpdatingPreferences(false);
+    }
+  };
+
+  const handleExamWebsiteClick = (examType: string) => {
+    const exam = examTypes.find(e => e.value === examType);
+    if (exam?.website) {
+      window.open(exam.website, '_blank');
     }
   };
   
@@ -245,9 +252,22 @@ const FullScreenProfile = ({
                   )}
                 </Button>
                 {preferences?.exam_type && (
-                  <p className="text-gray-400 text-sm">
-                    Current: {examTypes.find(e => e.value === preferences.exam_type)?.label}
-                  </p>
+                  <div className="space-y-2">
+                    <p className="text-gray-400 text-sm">
+                      Current: {examTypes.find(e => e.value === preferences.exam_type)?.label}
+                    </p>
+                    {examTypes.find(e => e.value === preferences.exam_type)?.website && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleExamWebsiteClick(preferences.exam_type)}
+                        className="w-full bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Visit Official Website
+                      </Button>
+                    )}
+                  </div>
                 )}
               </CardContent>
             </Card>
