@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Bell, User, LogOut, X, Minimize2, Target } from 'lucide-react';
+import { Search, User, LogOut, X, Minimize2, Target, Crown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotes } from '@/hooks/useNotes';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { usePremium } from '@/hooks/usePremium';
 import ProfileSidebar from './ProfileSidebar';
 
 interface HeaderProps {
@@ -19,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
   const { user, signOut } = useAuth();
   const { notes } = useNotes();
   const { preferences } = useUserPreferences();
+  const { isPremium } = usePremium();
   const [searchQuery, setSearchQuery] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [greeting, setGreeting] = useState('');
@@ -122,9 +124,14 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-400 hover:text-white p-2"
+                className={`p-2 ${
+                  isPremium 
+                    ? 'text-yellow-400 hover:text-yellow-300' 
+                    : 'text-gray-400 hover:text-white'
+                }`}
+                title={isPremium ? 'Premium Active' : 'Free Plan'}
               >
-                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Crown className={`h-4 w-4 sm:h-5 sm:w-5 ${isPremium ? 'fill-current' : ''}`} />
               </Button>
               <Button
                 variant="ghost"
