@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,14 +16,40 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [isAnswered, setIsAnswered] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30); // 30 seconds per question
+  const [timeLeft, setTimeLeft] = useState(60); // Default 60 seconds
+  const [quizDifficulty, setQuizDifficulty] = useState<string>('medium');
   
-  const { getQuizQuestions, submitAnswer, completeQuiz } = useQuiz();
+  const { getQuizQuestions, submitAnswer, completeQuiz, getQuizSessions } = useQuiz();
   const { data: questions, isLoading } = getQuizQuestions(sessionId);
+  const { data: sessions } = getQuizSessions;
 
   const currentQuestion = questions?.[currentQuestionIndex];
   const totalQuestions = questions?.length || 0;
   const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;
+
+  // Get quiz difficulty and set time limit accordingly
+  useEffect(() => {
+    if (sessions?.data) {
+      const currentSession = sessions.data.find(session => session.id === sessionId);
+      if (currentSession) {
+        setQuizDifficulty(currentSession.difficulty);
+        const timeLimit = getTimeLimit(currentSession.difficulty);
+        setTimeLeft(timeLimit);
+      }
+    }
+  }, [sessions, sessionId]);
+
+  const getTimeLimit = (difficulty: string): number => {
+    switch (difficulty) {
+      case 'easy':
+      case 'medium':
+        return 60; // 1 minute
+      case 'hard':
+        return 180; // 3 minutes
+      default:
+        return 60;
+    }
+  };
 
   // Timer effect
   useEffect(() => {
@@ -38,17 +63,24 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
 
   // Reset timer for new question
   useEffect(() => {
-    setTimeLeft(30);
+    const timeLimit = getTimeLimit(quizDifficulty);
+    setTimeLeft(timeLimit);
     setSelectedAnswer('');
     setIsAnswered(false);
     setShowResult(false);
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, quizDifficulty]);
 
   const handleTimeUp = () => {
     if (!isAnswered) {
       setIsAnswered(true);
       setShowResult(true);
     }
+  };
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return minutes > 0 ? `${minutes}:${remainingSeconds.toString().padStart(2, '0')}` : `${seconds}s`;
   };
 
   const handleAnswerSelect = async (answer: string) => {
@@ -145,7 +177,7 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
             <span className={`font-mono ${timeLeft <= 10 ? 'text-red-400' : ''}`}>
-              {timeLeft}s
+              {formatTime(timeLeft)}
             </span>
           </div>
           <span className="text-gray-400">

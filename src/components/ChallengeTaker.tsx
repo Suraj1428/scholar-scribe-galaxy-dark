@@ -18,7 +18,7 @@ const ChallengeTaker = ({ challengeId, participantId, onComplete, onBack }: Chal
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [isAnswered, setIsAnswered] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   
   const { getChallengeByLink, getChallengeQuestions, submitChallengeAnswer, completeChallenge } = useChallenge();
@@ -28,6 +28,18 @@ const ChallengeTaker = ({ challengeId, participantId, onComplete, onBack }: Chal
   const currentQuestion = questions?.[currentQuestionIndex];
   const totalQuestions = questions?.length || 0;
   const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;
+
+  const getTimeLimit = (difficulty: string): number => {
+    switch (difficulty) {
+      case 'easy':
+      case 'medium':
+        return 60; // 1 minute
+      case 'hard':
+        return 180; // 3 minutes
+      default:
+        return 60;
+    }
+  };
 
   // Timer effect
   useEffect(() => {
@@ -41,12 +53,19 @@ const ChallengeTaker = ({ challengeId, participantId, onComplete, onBack }: Chal
 
   // Reset timer for new question
   useEffect(() => {
-    setTimeLeft(challenge?.time_limit || 30);
+    const timeLimit = challenge ? getTimeLimit(challenge.difficulty) : 60;
+    setTimeLeft(timeLimit);
     setSelectedAnswer('');
     setIsAnswered(false);
     setShowResult(false);
     setQuestionStartTime(Date.now());
   }, [currentQuestionIndex, challenge]);
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return minutes > 0 ? `${minutes}:${remainingSeconds.toString().padStart(2, '0')}` : `${seconds}s`;
+  };
 
   const handleTimeUp = () => {
     if (!isAnswered && currentQuestion) {
@@ -167,7 +186,7 @@ const ChallengeTaker = ({ challengeId, participantId, onComplete, onBack }: Chal
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
             <span className={`font-mono ${timeLeft <= 10 ? 'text-red-400' : ''}`}>
-              {timeLeft}s
+              {formatTime(timeLeft)}
             </span>
           </div>
           <span className="text-gray-400">
