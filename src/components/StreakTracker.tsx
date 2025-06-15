@@ -3,14 +3,27 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Flame, TrendingUp, Calendar, User } from 'lucide-react';
 import { useStreakData } from '@/hooks/useStreakData';
+import { useAuth } from '@/hooks/useAuth';
 
 const StreakTracker = () => {
   const { streakData, currentStreak, highestStreak, todayUploaded } = useStreakData();
+  const { user } = useAuth();
 
   // Create staircase steps based on current streak (max 10 visible steps)
   const maxVisibleSteps = 10;
   const visibleSteps = Math.min(currentStreak + 1, maxVisibleSteps);
   const steps = Array.from({ length: visibleSteps }, (_, i) => i + 1);
+
+  // Get user's display name
+  const getUserDisplayName = () => {
+    if (user?.user_metadata?.full_name) {
+      return user.user_metadata.full_name;
+    }
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
+    return 'You';
+  };
 
   return (
     <div className="p-2 sm:p-4 space-y-3 sm:space-y-4">
@@ -108,14 +121,25 @@ const StreakTracker = () => {
                         )}
                       </div>
                       
-                      {/* Character on current step */}
+                      {/* Character on current step with user name */}
                       {isCurrentStep && (
-                        <div 
-                          className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-cyan-400 animate-bounce"
-                          style={{ animationDuration: '1.5s' }}
-                        >
-                          <User className="h-6 w-6 sm:h-8 sm:w-8" />
-                        </div>
+                        <>
+                          {/* User Name above character */}
+                          <div 
+                            className="absolute -top-20 left-1/2 transform -translate-x-1/2 text-cyan-300 text-xs font-medium whitespace-nowrap bg-gray-800/80 px-2 py-1 rounded-md border border-cyan-400/30"
+                            style={{ animationDelay: '0.5s' }}
+                          >
+                            {getUserDisplayName()}
+                          </div>
+                          
+                          {/* Character */}
+                          <div 
+                            className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-cyan-400 animate-bounce"
+                            style={{ animationDuration: '1.5s' }}
+                          >
+                            <User className="h-6 w-6 sm:h-8 sm:w-8" />
+                          </div>
+                        </>
                       )}
                       
                       {/* Next step indicator */}
