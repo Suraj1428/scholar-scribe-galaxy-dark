@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -300,9 +301,9 @@ Rules:
                         </div>
                         <div className="text-right">
                           {session.completed ? (
-                            <div className="flex items-center gap-1 text-green-400">
+                            <div className="flex items-center gap-2 text-green-400 font-medium">
                               <Trophy className="h-4 w-4" />
-                              <span>{session.score}/{session.total_questions}</span>
+                              <span className="text-lg">{session.score}/{session.total_questions}</span>
                             </div>
                           ) : (
                             <Button
