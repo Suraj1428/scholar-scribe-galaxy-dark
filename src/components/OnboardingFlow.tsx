@@ -21,9 +21,17 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
     { id: 'upsc', name: 'UPSC', description: 'Civil Services Examination' },
     { id: 'gate', name: 'GATE', description: 'Graduate Aptitude Test in Engineering' },
     { id: 'ssc', name: 'SSC', description: 'Staff Selection Commission' },
+    { id: 'rrb', name: 'RRB Railway', description: 'Railway Recruitment Board' },
     { id: 'neet', name: 'NEET', description: 'Medical Entrance Exam' },
     { id: 'jee', name: 'JEE', description: 'Engineering Entrance Exam' },
     { id: 'cat', name: 'CAT', description: 'Management Entrance Exam' },
+    { id: 'ibps', name: 'IBPS', description: 'Banking Personnel Selection' },
+    { id: 'nda', name: 'NDA', description: 'National Defence Academy' },
+    { id: 'cds', name: 'CDS', description: 'Combined Defence Services' },
+    { id: 'capf', name: 'CAPF', description: 'Central Armed Police Forces' },
+    { id: 'afcat', name: 'AFCAT', description: 'Air Force Common Admission Test' },
+    { id: 'clat', name: 'CLAT', description: 'Common Law Admission Test' },
+    { id: 'net', name: 'UGC NET', description: 'National Eligibility Test' },
     { id: 'other', name: 'Other', description: 'Custom Exam Preparation' }
   ];
 
@@ -109,7 +117,7 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
       <div>
         <h3 className="text-lg font-semibold text-white mb-4">Which exam are you preparing for?</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto">
           {examOptions.map((exam) => (
             <Card
               key={exam.id}
