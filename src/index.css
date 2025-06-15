@@ -48,44 +48,44 @@
   }
 
   .dark {
-    /* Deep Blue Ocean Theme - Optimized for maximum visibility */
-    --background: 215 28% 8%;          /* Deep slate-950 background */
-    --foreground: 210 20% 95%;         /* Very light text for contrast */
+    /* Light Blue Theme - White background with dark text and light blue accents */
+    --background: 0 0% 100%;              /* Pure white background */
+    --foreground: 215 25% 15%;            /* Dark gray text for readability */
 
-    --card: 215 25% 12%;               /* Slate-900 cards */
-    --card-foreground: 210 20% 95%;    /* Light text on cards */
+    --card: 0 0% 98%;                     /* Very light gray cards */
+    --card-foreground: 215 25% 15%;       /* Dark text on cards */
 
-    --popover: 215 25% 12%;            /* Consistent with cards */
-    --popover-foreground: 210 20% 95%;
+    --popover: 0 0% 100%;                 /* White popover backgrounds */
+    --popover-foreground: 215 25% 15%;
 
-    --primary: 188 100% 42%;           /* Bright cyan-400 primary */
-    --primary-foreground: 215 28% 8%;  /* Dark text on bright buttons */
+    --primary: 199 89% 48%;               /* Light blue primary (sky-500) */
+    --primary-foreground: 0 0% 100%;      /* White text on blue buttons */
 
-    --secondary: 215 20% 18%;          /* Slate-800 secondary */
-    --secondary-foreground: 210 20% 90%; /* Light secondary text */
+    --secondary: 210 40% 96%;             /* Light gray secondary */
+    --secondary-foreground: 215 25% 15%;  /* Dark secondary text */
 
-    --muted: 215 20% 18%;              /* Slate-800 muted areas */
-    --muted-foreground: 210 10% 70%;   /* Medium contrast muted text */
+    --muted: 210 40% 96%;                 /* Light gray muted areas */
+    --muted-foreground: 215 20% 45%;      /* Medium gray muted text */
 
-    --accent: 188 85% 35%;             /* Cyan-500 accents */
-    --accent-foreground: 215 28% 8%;   /* Dark text on accents */
+    --accent: 199 89% 48%;                /* Light blue accents */
+    --accent-foreground: 0 0% 100%;       /* White text on accents */
 
-    --destructive: 0 75% 60%;          /* Bright red for errors */
-    --destructive-foreground: 210 20% 95%;
+    --destructive: 0 84.2% 60.2%;         /* Red for errors */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 25%;             /* Visible but subtle borders */
-    --input: 215 20% 18%;              /* Input backgrounds */
-    --ring: 188 100% 42%;              /* Cyan focus rings */
+    --border: 220 13% 91%;                /* Light gray borders */
+    --input: 0 0% 98%;                    /* Light input backgrounds */
+    --ring: 199 89% 48%;                  /* Light blue focus rings */
 
     /* Sidebar colors for consistency */
-    --sidebar-background: 215 28% 8%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 188 100% 42%;
-    --sidebar-primary-foreground: 215 28% 8%;
-    --sidebar-accent: 215 20% 18%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 215 15% 25%;
-    --sidebar-ring: 188 100% 42%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 25% 15%;
+    --sidebar-primary: 199 89% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 215 25% 15%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 199 89% 48%;
   }
 }
 
@@ -149,26 +149,26 @@
     background: hsl(var(--primary));
   }
 
-  /* Ensure high contrast for better visibility */
+  /* Light theme styling */
   .dark {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
-  /* Enhanced button visibility */
+  /* Enhanced button visibility for light theme */
   .dark button {
     font-weight: 500;
   }
 
-  /* Enhanced text contrast */
+  /* Enhanced text contrast for light theme */
   .dark .text-gray-400 {
-    color: hsl(210 10% 70%) !important;
+    color: hsl(215 20% 45%) !important;
   }
 
   .dark .text-gray-300 {
-    color: hsl(210 15% 85%) !important;
+    color: hsl(215 25% 35%) !important;
   }
 
   .dark .text-white {
-    color: hsl(210 20% 95%) !important;
+    color: hsl(215 25% 15%) !important;
   }
 }

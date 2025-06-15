@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -127,14 +126,14 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
 
   return (
     <>
-      <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40 overflow-hidden">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 overflow-hidden shadow-sm">
         <div className="p-3 sm:p-4">
           <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2 sm:gap-3">
             <div className="flex-1 min-w-0 max-w-full">
-              <div className="flex items-center gap-2 mb-1 border border-white rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full">
-                <h1 className="text-base sm:text-lg md:text-xl font-bold text-white whitespace-nowrap">StudySmart</h1>
+              <div className="flex items-center gap-2 mb-1 border border-sky-500 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full bg-sky-50">
+                <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 whitespace-nowrap">StudySmart</h1>
               </div>
-              <p className="text-gray-400 text-sm sm:text-base truncate max-w-full">
+              <p className="text-gray-600 text-sm sm:text-base truncate max-w-full">
                 {greeting}
               </p>
             </div>
@@ -144,7 +143,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                   variant="ghost"
                   size="sm"
                   onClick={handleExamClick}
-                  className="flex items-center gap-1 sm:gap-2 text-purple-400 hover:text-purple-300 hover:bg-purple-500/20 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
+                  className="flex items-center gap-1 sm:gap-2 text-sky-600 hover:text-sky-700 hover:bg-sky-50 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
                   title={`Click to visit ${getExamDisplayName(preferences.exam_type)} official website`}
                 >
                   <Target className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" />
@@ -157,14 +156,14 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                 variant="ghost"
                 size="sm"
                 onClick={handlePremiumClick}
-                className="p-1.5 sm:p-2 hover:bg-gray-700/50 transition-colors flex-shrink-0"
+                className="p-1.5 sm:p-2 hover:bg-gray-100 transition-colors flex-shrink-0"
                 title={isPremium ? 'Premium Active - Manage Subscription' : 'Upgrade to Premium'}
               >
                 <Crown 
                   className={`h-4 w-4 sm:h-5 sm:w-5 ${
                     isPremium 
-                      ? 'text-yellow-400 fill-yellow-400 drop-shadow-sm' 
-                      : 'text-yellow-300 hover:text-yellow-200'
+                      ? 'text-yellow-500 fill-yellow-500 drop-shadow-sm' 
+                      : 'text-yellow-600 hover:text-yellow-500'
                   }`} 
                 />
               </Button>
@@ -172,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                 variant="ghost"
                 size="sm"
                 onClick={signOut}
-                className="text-gray-400 hover:text-white p-1.5 sm:p-2 flex-shrink-0"
+                className="text-gray-600 hover:text-gray-800 hover:bg-gray-100 p-1.5 sm:p-2 flex-shrink-0"
               >
                 <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
@@ -185,14 +184,14 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               placeholder="Search notes, subjects..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 pr-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500 h-10 sm:h-11 w-full"
+              className="pl-10 pr-10 bg-gray-50 border-gray-300 text-gray-800 placeholder-gray-500 focus:border-sky-500 h-10 sm:h-11 w-full"
             />
             {searchQuery && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={clearSearch}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-white"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
               >
                 <X className="h-4 w-4" />
               </Button>
