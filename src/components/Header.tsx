@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { useNotes } from '@/hooks/useNotes';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { usePremium } from '@/hooks/usePremium';
 import ProfileSidebar from './ProfileSidebar';
+import SubscriptionModal from './SubscriptionModal';
 
 interface HeaderProps {
   onSearchResults?: (results: any[]) => void;
@@ -23,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
   const { isPremium } = usePremium();
   const [searchQuery, setSearchQuery] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [greeting, setGreeting] = useState('');
 
   // Update greeting based on current time
@@ -86,6 +87,10 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
     return examMap[examType] || examType.toUpperCase();
   };
 
+  const handlePremiumClick = () => {
+    setIsSubscriptionOpen(true);
+  };
+
   return (
     <>
       <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
@@ -124,12 +129,13 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               <Button
                 variant="ghost"
                 size="sm"
+                onClick={handlePremiumClick}
                 className={`p-2 ${
                   isPremium 
                     ? 'text-yellow-400 hover:text-yellow-300' 
                     : 'text-gray-400 hover:text-white'
                 }`}
-                title={isPremium ? 'Premium Active' : 'Free Plan'}
+                title={isPremium ? 'Premium Active - Manage Subscription' : 'Upgrade to Premium'}
               >
                 <Crown className={`h-4 w-4 sm:h-5 sm:w-5 ${isPremium ? 'fill-current' : ''}`} />
               </Button>
@@ -179,6 +185,11 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
       <ProfileSidebar 
         isOpen={isProfileOpen} 
         onClose={() => setIsProfileOpen(false)} 
+      />
+
+      <SubscriptionModal 
+        isOpen={isSubscriptionOpen} 
+        onClose={() => setIsSubscriptionOpen(false)} 
       />
     </>
   );
