@@ -17,8 +17,8 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-4 py-2 z-50">
-      <div className="flex justify-around items-center max-w-md mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-2 py-1 z-50">
+      <div className="flex justify-start items-center gap-1 max-w-full">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeSection === item.id;
@@ -27,7 +27,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
             <button
               key={item.id}
               onClick={() => onSectionChange(item.id)}
-              className={`flex flex-col items-center space-y-1 p-2 rounded-lg transition-colors ${
+              className={`flex flex-col items-center space-y-0.5 px-3 py-1.5 rounded-lg transition-colors ${
                 isActive
                   ? 'text-purple-400 bg-purple-400/10'
                   : 'text-gray-400 hover:text-gray-300'
