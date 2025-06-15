@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, User, LogOut, X, Minimize2, Target, Crown } from 'lucide-react';
+import { Search, LogOut, X, Minimize2, Target, Crown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNotes } from '@/hooks/useNotes';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { usePremium } from '@/hooks/usePremium';
-import ProfileSidebar from './ProfileSidebar';
 import SubscriptionModal from './SubscriptionModal';
 
 interface HeaderProps {
@@ -22,7 +21,6 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
   const { preferences } = useUserPreferences();
   const { isPremium } = usePremium();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [greeting, setGreeting] = useState('');
 
@@ -144,16 +142,6 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsProfileOpen(true)}
-                className="text-gray-400 hover:text-white p-1"
-              >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                  <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
-                </div>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
                 onClick={signOut}
                 className="text-gray-400 hover:text-white p-2"
               >
@@ -183,11 +171,6 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
           </div>
         </div>
       </header>
-
-      <ProfileSidebar 
-        isOpen={isProfileOpen} 
-        onClose={() => setIsProfileOpen(false)} 
-      />
 
       <SubscriptionModal 
         isOpen={isSubscriptionOpen} 
