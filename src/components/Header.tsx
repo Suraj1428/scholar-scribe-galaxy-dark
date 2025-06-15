@@ -130,14 +130,16 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                 variant="ghost"
                 size="sm"
                 onClick={handlePremiumClick}
-                className={`p-2 ${
-                  isPremium 
-                    ? 'text-yellow-400 hover:text-yellow-300' 
-                    : 'text-gray-400 hover:text-white'
-                }`}
+                className="p-2 hover:bg-gray-700/50 transition-colors"
                 title={isPremium ? 'Premium Active - Manage Subscription' : 'Upgrade to Premium'}
               >
-                <Crown className={`h-4 w-4 sm:h-5 sm:w-5 ${isPremium ? 'fill-current' : ''}`} />
+                <Crown 
+                  className={`h-5 w-5 sm:h-6 sm:w-6 ${
+                    isPremium 
+                      ? 'text-yellow-400 fill-yellow-400 drop-shadow-sm' 
+                      : 'text-yellow-300 hover:text-yellow-200'
+                  }`} 
+                />
               </Button>
               <Button
                 variant="ghost"
