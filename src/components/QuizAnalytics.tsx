@@ -67,9 +67,9 @@ const QuizAnalytics = () => {
   };
 
   const getPerformanceIcon = (accuracy: number) => {
-    if (accuracy >= 80) return <TrendingUp className="h-4 w-4" />;
-    if (accuracy >= 60) return <Target className="h-4 w-4" />;
-    return <TrendingDown className="h-4 w-4" />;
+    if (accuracy >= 80) return <TrendingUp className="h-4 w-4 text-yellow-400" />;
+    if (accuracy >= 60) return <Target className="h-4 w-4 text-yellow-400" />;
+    return <TrendingDown className="h-4 w-4 text-yellow-400" />;
   };
 
   return (
@@ -123,7 +123,7 @@ const QuizAnalytics = () => {
                 <div className="flex items-center gap-2">
                   {getPerformanceIcon(topic.accuracy)}
                   <span className="text-white font-medium">{topic.topic}</span>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
                     {topic.quizCount} quiz{topic.quizCount !== 1 ? 'es' : ''}
                   </Badge>
                 </div>
