@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -89,6 +90,25 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
     setIsSubscriptionOpen(true);
   };
 
+  const examTypes = [
+    { value: 'upsc', label: 'UPSC', website: 'https://www.upsc.gov.in/' },
+    { value: 'gate', label: 'GATE', website: 'https://gate.iitg.ac.in/' },
+    { value: 'ssc', label: 'SSC', website: 'https://ssc.nic.in/' },
+    { value: 'neet', label: 'NEET', website: 'https://neet.nta.nic.in/' },
+    { value: 'jee', label: 'JEE', website: 'https://jeemain.nta.nic.in/' },
+    { value: 'cat', label: 'CAT', website: 'https://iimcat.ac.in/' },
+    { value: 'other', label: 'Other', website: null }
+  ];
+
+  const handleExamClick = () => {
+    if (!preferences?.exam_type) return;
+    
+    const exam = examTypes.find(e => e.value === preferences.exam_type);
+    if (exam?.website) {
+      window.open(exam.website, '_blank');
+    }
+  };
+
   return (
     <>
       <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
@@ -117,12 +137,18 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                 </Button>
               )}
               {preferences?.exam_type && (
-                <div className="flex items-center gap-2 text-purple-400">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleExamClick}
+                  className="flex items-center gap-2 text-purple-400 hover:text-purple-300 hover:bg-purple-500/20 transition-colors"
+                  title={`Click to visit ${getExamDisplayName(preferences.exam_type)} official website`}
+                >
                   <Target className="h-4 w-4 sm:h-5 sm:w-5" />
                   <span className="text-xs sm:text-sm font-medium">
                     {getExamDisplayName(preferences.exam_type)}
                   </span>
-                </div>
+                </Button>
               )}
               <Button
                 variant="ghost"
