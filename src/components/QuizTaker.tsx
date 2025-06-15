@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,8 +30,8 @@ const QuizTaker = ({ sessionId, onComplete, onBack }: QuizTakerProps) => {
 
   // Get quiz difficulty and set time limit accordingly
   useEffect(() => {
-    if (sessions?.data) {
-      const currentSession = sessions.data.find(session => session.id === sessionId);
+    if (sessions) {
+      const currentSession = sessions.find(session => session.id === sessionId);
       if (currentSession) {
         setQuizDifficulty(currentSession.difficulty);
         const timeLimit = getTimeLimit(currentSession.difficulty);
