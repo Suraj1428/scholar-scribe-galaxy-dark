@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BookOpen, Image, Settings, Brain, Users } from 'lucide-react';
+import { BookOpen, Image, User, Brain, Users } from 'lucide-react';
 
 interface BottomNavigationProps {
   activeSection: string;
@@ -13,7 +13,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
     { id: 'quiz', icon: Brain, label: 'Quiz' },
     { id: 'challenge', icon: Users, label: 'Challenge' },
     { id: 'gallery', icon: Image, label: 'Gallery' },
-    { id: 'compress', icon: Settings, label: 'Tools' },
+    { id: 'profile', icon: User, label: 'Profile' },
   ];
 
   return (

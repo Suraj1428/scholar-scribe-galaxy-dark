@@ -6,9 +6,9 @@ import StreakTracker from './StreakTracker';
 import NotesSection from './NotesSection';
 import GallerySection from './GallerySection';
 import BookViewSection from './BookViewSection';
-import ImageCompressionSection from './ImageCompressionSection';
 import QuizSection from './QuizSection';
 import ChallengeSection from './ChallengeSection';
+import ProfileSidebar from './ProfileSidebar';
 import BottomNavigation from './BottomNavigation';
 import SearchResults from './SearchResults';
 
@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('notes');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleSearchResults = (results: any[]) => {
     setSearchResults(results);
@@ -25,6 +26,14 @@ const Dashboard = () => {
   const handleClearSearch = () => {
     setSearchResults([]);
     setIsSearching(false);
+  };
+
+  const handleSectionChange = (section: string) => {
+    if (section === 'profile') {
+      setIsProfileOpen(true);
+    } else {
+      setActiveSection(section);
+    }
   };
 
   const renderSection = () => {
@@ -49,8 +58,6 @@ const Dashboard = () => {
         return <GallerySection />;
       case 'book':
         return <BookViewSection />;
-      case 'compress':
-        return <ImageCompressionSection />;
       default:
         return (
           <div className="space-y-4 sm:space-y-6">
@@ -75,7 +82,11 @@ const Dashboard = () => {
           {renderSection()}
         </div>
       </main>
-      <BottomNavigation activeSection={activeSection} onSectionChange={setActiveSection} />
+      <BottomNavigation activeSection={activeSection} onSectionChange={handleSectionChange} />
+      <ProfileSidebar 
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)} 
+      />
     </div>
   );
 };
