@@ -1,16 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   X, User, Camera, Trophy, TrendingUp, Target, Calendar, 
-  BookOpen, Brain, Clock, Award, BarChart3, Zap 
+  BookOpen, Brain, Clock, Award, BarChart3, Zap, Settings 
 } from 'lucide-react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { QuizAnalytics } from '@/hooks/useQuizAnalytics';
+import { UserPreferences } from '@/hooks/useUserPreferences';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface FullScreenProfileProps {
   isOpen: boolean;
@@ -27,6 +31,8 @@ interface FullScreenProfileProps {
   onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   uploadingImage: boolean;
   fileInputRef: React.RefObject<HTMLInputElement>;
+  preferences?: UserPreferences | null;
+  onPreferencesUpdate?: () => void;
 }
 
 const FullScreenProfile = ({ 
@@ -38,8 +44,71 @@ const FullScreenProfile = ({
   quizAnalytics,
   onImageUpload,
   uploadingImage,
-  fileInputRef
+  fileInputRef,
+  preferences,
+  onPreferencesUpdate
 }: FullScreenProfileProps) => {
+  const [selectedExamType, setSelectedExamType] = useState(preferences?.exam_type || '');
+  const [isUpdatingPreferences, setIsUpdatingPreferences] = useState(false);
+  const { toast } = useToast();
+  
+  const examTypes = [
+    { value: 'upsc', label: 'UPSC' },
+    { value: 'gate', label: 'GATE' },
+    { value: 'ssc', label: 'SSC' },
+    { value: 'neet', label: 'NEET' },
+    { value: 'jee', label: 'JEE' },
+    { value: 'cat', label: 'CAT' },
+    { value: 'other', label: 'Other' }
+  ];
+
+  const handleExamPreferenceUpdate = async () => {
+    if (!user || !selectedExamType) return;
+
+    setIsUpdatingPreferences(true);
+    try {
+      if (preferences) {
+        // Update existing preferences
+        const { error } = await supabase
+          .from('user_preferences')
+          .update({ 
+            exam_type: selectedExamType,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', user.id);
+
+        if (error) throw error;
+      } else {
+        // Create new preferences
+        const { error } = await supabase
+          .from('user_preferences')
+          .insert({
+            user_id: user.id,
+            exam_type: selectedExamType,
+            onboarding_completed: true
+          });
+
+        if (error) throw error;
+      }
+
+      toast({
+        title: "Preferences Updated",
+        description: "Your exam preference has been saved successfully.",
+      });
+
+      // Call the callback to refresh preferences
+      onPreferencesUpdate?.();
+    } catch (error) {
+      console.error('Error updating preferences:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update exam preference. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingPreferences(false);
+    }
+  };
   
   const getPerformanceLevel = (accuracy: number) => {
     if (accuracy >= 90) return { level: 'Expert', color: 'text-yellow-400', bg: 'bg-yellow-500/20' };
@@ -137,6 +206,52 @@ const FullScreenProfile = ({
               </div>
             </div>
 
+            {/* Exam Preferences */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Settings className="h-5 w-5 text-purple-400" />
+                  Exam Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="text-gray-300 text-sm mb-2 block">Current Exam Target</label>
+                  <Select value={selectedExamType} onValueChange={setSelectedExamType}>
+                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                      <SelectValue placeholder="Select your target exam" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-700 border-gray-600">
+                      {examTypes.map((exam) => (
+                        <SelectItem key={exam.value} value={exam.value} className="text-white hover:bg-gray-600">
+                          {exam.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  onClick={handleExamPreferenceUpdate}
+                  disabled={isUpdatingPreferences || !selectedExamType || selectedExamType === preferences?.exam_type}
+                  className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50"
+                >
+                  {isUpdatingPreferences ? (
+                    <>
+                      <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Updating...
+                    </>
+                  ) : (
+                    'Save Preference'
+                  )}
+                </Button>
+                {preferences?.exam_type && (
+                  <p className="text-gray-400 text-sm">
+                    Current: {examTypes.find(e => e.value === preferences.exam_type)?.label}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Quiz Performance */}
             {quizAnalytics && (
               <>
@@ -192,7 +307,7 @@ const FullScreenProfile = ({
                 </Card>
 
                 {/* Difficulty Analysis */}
-                <Card className="bg-gray-800 border-gray-700">
+                <Card className="lg:col-span-3 bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Zap className="h-5 w-5 text-yellow-400" />
@@ -200,18 +315,18 @@ const FullScreenProfile = ({
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {quizAnalytics.difficultyPerformance.map((diff, index) => (
-                        <div key={index} className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
+                        <div key={index} className="bg-gray-700/50 p-4 rounded-lg">
+                          <div className="flex items-center gap-3 mb-2">
                             <div className={`w-3 h-3 rounded-full ${
                               diff.difficulty === 'easy' ? 'bg-green-400' :
                               diff.difficulty === 'medium' ? 'bg-yellow-400' : 'bg-red-400'
                             }`} />
-                            <span className="text-white capitalize">{diff.difficulty}</span>
+                            <span className="text-white capitalize font-medium">{diff.difficulty}</span>
                           </div>
-                          <div className="text-right">
-                            <p className="text-white font-medium">{diff.accuracy.toFixed(1)}%</p>
+                          <div className="space-y-1">
+                            <p className="text-2xl font-bold text-white">{diff.accuracy.toFixed(1)}%</p>
                             <p className="text-gray-400 text-sm">{diff.totalQuestions} questions</p>
                           </div>
                         </div>

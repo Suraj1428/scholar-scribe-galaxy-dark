@@ -17,6 +17,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { useStreakData } from '@/hooks/useStreakData';
 import { useSessionTimer } from '@/hooks/useSessionTimer';
 import { useQuizAnalytics } from '@/hooks/useQuizAnalytics';
+import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { supabase } from '@/integrations/supabase/client';
 import { User, Calendar, FileText, BookOpen, Clock, Timer, CheckSquare } from 'lucide-react';
 
@@ -34,6 +35,7 @@ const Dashboard = () => {
   const { currentStreak } = useStreakData();
   const { currentSessionTime, longestSession, formatTime } = useSessionTimer();
   const { analytics } = useQuizAnalytics();
+  const { preferences, fetchPreferences } = useUserPreferences();
 
   React.useEffect(() => {
     if (user?.user_metadata?.avatar_url) {
@@ -165,6 +167,8 @@ const Dashboard = () => {
             onImageUpload={handleImageUpload}
             uploadingImage={uploadingImage}
             fileInputRef={fileInputRef}
+            preferences={preferences}
+            onPreferencesUpdate={fetchPreferences}
           />
         );
       default:
