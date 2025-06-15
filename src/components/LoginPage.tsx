@@ -27,7 +27,7 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
               <BookOpen className="h-8 w-8 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-white">StudyNotes</CardTitle>
+          <CardTitle className="text-2xl font-bold text-white">StudySmart</CardTitle>
           <p className="text-gray-400">Organize your academic journey</p>
         </CardHeader>
         <CardContent className="space-y-6">
