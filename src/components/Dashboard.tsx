@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from './Header';
 import StatsCards from './StatsCards';
@@ -191,8 +190,8 @@ const Dashboard = () => {
         onSectionChange={setActiveSection}
       />
       {activeSection !== 'profile' && (
-        <main className="pb-20 smooth-scroll">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <main className="pb-20 smooth-scroll w-full">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
             {renderSection()}
           </div>
         </main>
