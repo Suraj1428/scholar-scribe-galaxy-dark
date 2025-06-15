@@ -19,9 +19,10 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 z-50 safe-area-bottom shadow-lg">
       <div className="flex justify-between items-center w-full max-w-full overflow-x-auto">
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = activeSection === item.id;
+          const isProfile = item.id === 'profile';
           
           return (
             <button
@@ -31,7 +32,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
                 isActive
                   ? 'text-sky-600 bg-sky-50'
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-              }`}
+              } ${isProfile ? 'pl-8' : ''}`}
             >
               <Icon className="h-5 w-5 flex-shrink-0" />
               <span className="text-xs font-medium truncate">{item.label}</span>

@@ -72,11 +72,11 @@ const NotesSection = () => {
   if (!user) {
     return (
       <div className="p-4 space-y-6">
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-sky-50 border-sky-200">
           <CardContent className="p-8 text-center">
             <AlertCircle className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
-            <h3 className="text-white font-semibold mb-2">Authentication Required</h3>
-            <p className="text-gray-400 text-sm">Please log in to access your notes.</p>
+            <h3 className="text-gray-800 font-semibold mb-2">Authentication Required</h3>
+            <p className="text-gray-600 text-sm">Please log in to access your notes.</p>
           </CardContent>
         </Card>
       </div>
@@ -88,13 +88,13 @@ const NotesSection = () => {
     return (
       <div className="p-4 space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">Notes</h2>
+          <h2 className="text-xl font-bold text-gray-800">Notes</h2>
         </div>
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-sky-50 border-sky-200">
           <CardContent className="p-8 text-center">
             <Loader2 className="h-16 w-16 text-purple-400 mx-auto mb-4 animate-spin" />
-            <h3 className="text-white font-semibold mb-2">Loading Notes...</h3>
-            <p className="text-gray-400 text-sm">Please wait while we load your notes.</p>
+            <h3 className="text-gray-800 font-semibold mb-2">Loading Notes...</h3>
+            <p className="text-gray-600 text-sm">Please wait while we load your notes.</p>
           </CardContent>
         </Card>
       </div>
@@ -106,13 +106,13 @@ const NotesSection = () => {
     return (
       <div className="p-4 space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">Notes</h2>
+          <h2 className="text-xl font-bold text-gray-800">Notes</h2>
         </div>
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-sky-50 border-sky-200">
           <CardContent className="p-8 text-center">
             <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-            <h3 className="text-white font-semibold mb-2">Failed to Load Notes</h3>
-            <p className="text-gray-400 text-sm mb-4">{error}</p>
+            <h3 className="text-gray-800 font-semibold mb-2">Failed to Load Notes</h3>
+            <p className="text-gray-600 text-sm mb-4">{error}</p>
             <Button 
               onClick={handleRetry}
               className="bg-purple-600 hover:bg-purple-700"
@@ -128,10 +128,10 @@ const NotesSection = () => {
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-white">Notes</h2>
+        <h2 className="text-xl font-bold text-gray-800">Notes</h2>
         <div className="flex items-center gap-2">
           {!isPremium && (
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-gray-600">
               Images: {imageNotes.length}/18 | Subjects: {existingSubjects.length}/2
             </div>
           )}
@@ -146,9 +146,9 @@ const NotesSection = () => {
       </div>
 
       {isCreating && (
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-sky-50 border-sky-200">
           <CardHeader>
-            <CardTitle className="text-white">Create New Note</CardTitle>
+            <CardTitle className="text-gray-800">Create New Note</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -157,7 +157,7 @@ const NotesSection = () => {
                   placeholder="Note title..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  className="bg-white border-sky-300 text-gray-800 placeholder-gray-500"
                   required
                 />
               </div>
@@ -167,13 +167,13 @@ const NotesSection = () => {
                   placeholder="Subject name (e.g., Mathematics, History, Science...)"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  className="bg-white border-sky-300 text-gray-800 placeholder-gray-500"
                 />
-                <p className="text-gray-400 text-xs mt-1">Leave empty to use 'General' as subject</p>
+                <p className="text-gray-600 text-xs mt-1">Leave empty to use 'General' as subject</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Upload File (Image or PDF)
                 </label>
                 <div className="flex items-center gap-2">
@@ -186,13 +186,13 @@ const NotesSection = () => {
                   />
                   <label 
                     htmlFor="file-upload"
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded cursor-pointer text-white"
+                    className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-50 border border-sky-300 rounded cursor-pointer text-gray-800"
                   >
                     <Upload className="h-4 w-4" />
                     Choose File
                   </label>
                   {file && (
-                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
                       {file.type.startsWith('image/') ? (
                         <ImageIcon className="h-4 w-4" />
                       ) : (
@@ -202,7 +202,7 @@ const NotesSection = () => {
                     </div>
                   )}
                 </div>
-                <p className="text-gray-400 text-xs mt-1">Max file size: 50MB</p>
+                <p className="text-gray-600 text-xs mt-1">Max file size: 50MB</p>
               </div>
 
               <div className="flex gap-2">
@@ -218,7 +218,7 @@ const NotesSection = () => {
                     setSubject('');
                     setFile(null);
                   }}
-                  className="border-gray-600 text-gray-300"
+                  className="border-sky-300 text-gray-700"
                 >
                   Cancel
                 </Button>
@@ -230,26 +230,26 @@ const NotesSection = () => {
 
       <div className="space-y-4">
         {notes.length === 0 ? (
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-sky-50 border-sky-200">
             <CardContent className="p-8 text-center">
-              <FileText className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-white font-semibold mb-2">No notes yet</h3>
-              <p className="text-gray-400 text-sm">Create your first note to get started!</p>
+              <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-gray-800 font-semibold mb-2">No notes yet</h3>
+              <p className="text-gray-600 text-sm">Create your first note to get started!</p>
             </CardContent>
           </Card>
         ) : (
           notes.map((note) => (
-            <Card key={note.id} className="bg-gray-800 border-gray-700">
+            <Card key={note.id} className="bg-sky-50 border-sky-200">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-white font-semibold">{note.title}</h3>
+                      <h3 className="text-gray-800 font-semibold">{note.title}</h3>
                       <span className="px-2 py-1 bg-purple-600 text-white text-xs rounded">
                         {note.subject}
                       </span>
                       {note.file_type && (
-                        <span className="px-2 py-1 bg-gray-600 text-gray-300 text-xs rounded">
+                        <span className="px-2 py-1 bg-sky-200 text-gray-700 text-xs rounded">
                           {note.file_type}
                         </span>
                       )}
@@ -258,7 +258,7 @@ const NotesSection = () => {
                       <img 
                         src={note.file_url} 
                         alt={note.title}
-                        className="mt-2 max-w-xs rounded border border-gray-600 cursor-pointer hover:opacity-80"
+                        className="mt-2 max-w-xs rounded border border-sky-300 cursor-pointer hover:opacity-80"
                       />
                     )}
                     {note.file_url && note.file_type === 'pdf' && (
@@ -273,7 +273,7 @@ const NotesSection = () => {
                         </Button>
                       </div>
                     )}
-                    <p className="text-gray-400 text-xs mt-2">
+                    <p className="text-gray-600 text-xs mt-2">
                       {new Date(note.created_at).toLocaleString()}
                     </p>
                   </div>
@@ -281,7 +281,7 @@ const NotesSection = () => {
                     onClick={() => handleDelete(note.id)}
                     variant="outline"
                     size="sm"
-                    className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white ml-2"
+                    className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 ml-2"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
