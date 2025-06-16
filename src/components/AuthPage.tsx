@@ -116,7 +116,7 @@ const AuthPage = () => {
               <BookOpen className="h-8 w-8 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-white">StudyNotes</CardTitle>
+          <CardTitle className="text-2xl font-bold text-white">StudySmart</CardTitle>
           <p className="text-gray-400">
             {isSignUp ? 'Create your account' : 'Welcome back'}
           </p>
