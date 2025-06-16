@@ -232,7 +232,7 @@ const NotesSection = () => {
         {notes.length === 0 ? (
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-8 text-center">
-              <FileText className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+              <FileText className="h-16 w-16 text-gray-600 mx-auto mb-4 overflow-x-hidden" />
               <h3 className="text-white font-semibold mb-2">No notes yet</h3>
               <p className="text-gray-400 text-sm">Create your first note to get started!</p>
             </CardContent>
