@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -87,8 +88,8 @@ const ChallengeSection = () => {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-black text-white mb-2 opacity-100">Quiz Challenges</h2>
-              <p className="text-lg text-gray-400 font-semibold opacity-90">Create competitive quizzes and challenge your friends!</p>
+              <h2 className="text-3xl font-black text-black mb-2 opacity-100">Quiz Challenges</h2>
+              <p className="text-lg text-gray-600 font-semibold opacity-90">Create competitive quizzes and challenge your friends!</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

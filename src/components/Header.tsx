@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -126,14 +127,14 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
 
   return (
     <>
-      <header className="bg-green-800 border-b border-green-700 sticky top-0 z-40 overflow-hidden shadow-sm">
+      <header className="bg-blue-900 border-b border-blue-800 sticky top-0 z-40 overflow-hidden shadow-sm">
         <div className="p-3 sm:p-4">
           <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2 sm:gap-3">
             <div className="flex-1 min-w-0 max-w-full">
-              <div className="flex items-center gap-2 mb-1 border border-green-400 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full bg-green-700">
+              <div className="flex items-center gap-2 mb-1 border border-blue-400 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full bg-blue-800">
                 <h1 className="text-base sm:text-lg md:text-xl font-bold text-white whitespace-nowrap">StudySmart</h1>
               </div>
-              <p className="text-green-100 text-sm sm:text-base truncate max-w-full">
+              <p className="text-blue-100 text-sm sm:text-base truncate max-w-full">
                 {greeting}
               </p>
             </div>
@@ -143,7 +144,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                   variant="ghost"
                   size="sm"
                   onClick={handleExamClick}
-                  className="flex items-center gap-1 sm:gap-2 text-green-200 hover:text-white hover:bg-green-700 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
+                  className="flex items-center gap-1 sm:gap-2 text-blue-200 hover:text-white hover:bg-blue-800 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
                   title={`Click to visit ${getExamDisplayName(preferences.exam_type)} official website`}
                 >
                   <Target className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" />
@@ -156,7 +157,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                 variant="ghost"
                 size="sm"
                 onClick={handlePremiumClick}
-                className="p-1.5 sm:p-2 hover:bg-green-700 transition-colors flex-shrink-0"
+                className="p-1.5 sm:p-2 hover:bg-blue-800 transition-colors flex-shrink-0"
                 title={isPremium ? 'Premium Active - Manage Subscription' : 'Upgrade to Premium'}
               >
                 <Crown 
@@ -171,7 +172,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                 variant="ghost"
                 size="sm"
                 onClick={signOut}
-                className="text-green-200 hover:text-white hover:bg-green-700 p-1.5 sm:p-2 flex-shrink-0"
+                className="text-blue-200 hover:text-white hover:bg-blue-800 p-1.5 sm:p-2 flex-shrink-0"
               >
                 <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
@@ -179,19 +180,19 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
           </div>
           
           <div className="relative max-w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-300" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-300" />
             <Input
               placeholder="Search notes, subjects..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 pr-10 bg-green-700 border-green-600 text-white placeholder-green-300 focus:border-green-500 h-10 sm:h-11 w-full"
+              className="pl-10 pr-10 bg-blue-800 border-blue-600 text-white placeholder-blue-300 focus:border-blue-500 h-10 sm:h-11 w-full"
             />
             {searchQuery && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={clearSearch}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-green-300 hover:text-white"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-blue-300 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </Button>
