@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -111,8 +110,8 @@ Rules:
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-white mb-2">AI Quiz System</h2>
-        <p className="text-gray-400">Create quizzes, track performance, and improve your learning</p>
+        <h2 className="text-3xl font-bold text-white mb-2">AI Quiz System</h2>
+        <p className="text-lg text-gray-400">Create quizzes, track performance, and improve your learning</p>
       </div>
 
       <Tabs defaultValue="create" className="w-full">
@@ -139,7 +138,7 @@ Rules:
           {/* Quiz Generator Form */}
           <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-white flex items-center gap-2 text-xl">
                 <Brain className="h-5 w-5 text-purple-400" />
                 Create New Quiz with ChatGPT
               </CardTitle>
@@ -217,7 +216,7 @@ Rules:
           {/* Paste JSON Section */}
           <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-white flex items-center gap-2 text-xl">
                 <Upload className="h-5 w-5 text-green-400" />
                 Paste Quiz JSON from ChatGPT
               </CardTitle>
@@ -281,7 +280,7 @@ Rules:
         <TabsContent value="history" className="mt-6">
           {/* Recent Quiz Sessions */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Quiz History</h3>
+            <h3 className="text-xl font-semibold text-white mb-4">Quiz History</h3>
             {isLoading ? (
               <div className="text-gray-400">Loading...</div>
             ) : sessions && sessions.length > 0 ? (
