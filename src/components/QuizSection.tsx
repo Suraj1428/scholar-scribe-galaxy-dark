@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -270,17 +271,25 @@ Rules:
         </TabsContent>
 
         <TabsContent value="multi-subject" className="mt-6">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-black mb-2">Multi-Subject Quiz Creator</h2>
+            <p className="text-gray-600">Create comprehensive quizzes combining multiple subjects</p>
+          </div>
           <MultiSubjectQuiz />
         </TabsContent>
 
         <TabsContent value="analytics" className="mt-6">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-black mb-2">Quiz Analytics</h2>
+            <p className="text-gray-600">Track your performance and identify areas for improvement</p>
+          </div>
           <QuizAnalytics />
         </TabsContent>
 
         <TabsContent value="history" className="mt-6">
           {/* Recent Quiz Sessions */}
           <div>
-            <h3 className="text-xl font-bold text-white mb-4 opacity-100">Quiz History</h3>
+            <h3 className="text-xl font-bold text-black mb-4 opacity-100">Quiz History</h3>
             {isLoading ? (
               <div className="text-gray-400">Loading...</div>
             ) : sessions && sessions.length > 0 ? (
