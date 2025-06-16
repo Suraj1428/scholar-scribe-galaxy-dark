@@ -258,7 +258,7 @@ const NotesSection = () => {
                       <img 
                         src={note.file_url} 
                         alt={note.title}
-                        className="mt-2 max-w-xs rounded border border-gray-600 cursor-pointer hover:opacity-80"
+                        className="mt-2 w-full max-w-xs rounded border border-gray-600 cursor-pointer hover:opacity-80"
                       />
                     )}
                     {note.file_url && note.file_type === 'pdf' && (
