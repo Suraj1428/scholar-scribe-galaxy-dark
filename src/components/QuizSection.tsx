@@ -111,7 +111,7 @@ Rules:
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-3xl font-black text-black mb-2 opacity-200">AI Quiz System</h2>
-        <p className="text-lg text-gray-100 font-semibold opacity-300">Create quizzes, track performance, and improve your learning</p>
+        <p className="text-lg text-black-100 font-semibold opacity-300">Create quizzes, track performance, and improve your learning</p>
       </div>
 
       <Tabs defaultValue="create" className="w-full">
