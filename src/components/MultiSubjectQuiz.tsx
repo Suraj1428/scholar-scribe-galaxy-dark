@@ -45,8 +45,8 @@ const MultiSubjectQuiz = () => {
       <Card className="bg-gray-800 border-gray-700">
         <CardContent className="p-8 text-center">
           <Award className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Multi-Subject Quiz</h3>
-          <p className="text-gray-400 mb-4">
+          <h3 className="text-xl font-bold text-black mb-2">Multi-Subject Quiz</h3>
+          <p className="text-gray-800 mb-4">
             Upgrade to premium to create comprehensive quizzes combining multiple subjects and topics.
           </p>
           <Badge variant="outline" className="border-yellow-400 text-yellow-400">
