@@ -110,8 +110,8 @@ Rules:
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-black text-white mb-2 opacity-100">AI Quiz System</h2>
-        <p className="text-lg text-gray-400 font-semibold opacity-90">Create quizzes, track performance, and improve your learning</p>
+        <h2 className="text-3xl font-black text-black mb-2 opacity-200">AI Quiz System</h2>
+        <p className="text-lg text-gray-100 font-semibold opacity-300">Create quizzes, track performance, and improve your learning</p>
       </div>
 
       <Tabs defaultValue="create" className="w-full">
