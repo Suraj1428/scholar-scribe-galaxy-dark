@@ -126,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
 
   return (
     <>
-      <header className="bg-pink border-b border-gray-200 sticky top-0 z-40 overflow-x-hidden shadow-sm">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 overflow-x-hidden shadow-sm">
         <div className="p-3 sm:p-4">
           <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2 sm:gap-3">
             <div className="flex-1 min-w-0 max-w-full">
