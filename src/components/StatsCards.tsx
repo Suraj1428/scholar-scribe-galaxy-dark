@@ -20,43 +20,43 @@ const StatsCards = () => {
       title: 'Total Notes',
       value: notes.length.toString(),
       icon: FileText,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100'
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-500/20'
     },
     {
       title: 'Subjects',
       value: subjects.toString(),
       icon: BookOpen,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100'
+      color: 'text-green-400',
+      bgColor: 'bg-green-500/20'
     },
     {
       title: 'Streak',
       value: currentStreak.toString(),
       icon: Calendar,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100'
+      color: 'text-orange-400',
+      bgColor: 'bg-orange-500/20'
     },
     {
       title: 'Tasks',
       value: tasks.length.toString(),
       icon: Crown,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100'
+      color: 'text-purple-400',
+      bgColor: 'bg-purple-500/20'
     },
     {
       title: 'Present Time',
       value: formatTime(currentSessionTime),
       icon: Timer,
-      color: 'text-cyan-600',
-      bgColor: 'bg-cyan-100'
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-500/20'
     },
     {
       title: 'Longest Slot',
       value: formatTime(longestSession),
       icon: Clock,
-      color: 'text-pink-600',
-      bgColor: 'bg-pink-100'
+      color: 'text-pink-400',
+      bgColor: 'bg-pink-500/20'
     }
   ];
 
@@ -64,12 +64,12 @@ const StatsCards = () => {
     <div className="p-4">
       <div className="grid grid-cols-2 gap-3">
         {stats.map((stat, index) => (
-          <Card key={index} className="bg-sky-50 border-sky-200 shadow-sm">
+          <Card key={index} className="bg-gray-800 border-gray-700">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-600 text-xs mb-1">{stat.title}</p>
-                  <p className="text-gray-800 text-lg font-bold">{stat.value}</p>
+                  <p className="text-gray-400 text-xs mb-1">{stat.title}</p>
+                  <p className="text-white text-lg font-bold">{stat.value}</p>
                 </div>
                 <div className={`p-2 rounded-lg ${stat.bgColor}`}>
                   <stat.icon className={`h-5 w-5 ${stat.color}`} />

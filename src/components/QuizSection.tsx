@@ -111,8 +111,8 @@ Rules:
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-black text-black mb-2 opacity-200">AI Quiz System</h2>
-        <p className="text-lg text-black-100 font-semibold opacity-300">Create quizzes, track performance, and improve your learning</p>
+        <h2 className="text-2xl font-bold text-white mb-2">AI Quiz System</h2>
+        <p className="text-gray-400">Create quizzes, track performance, and improve your learning</p>
       </div>
 
       <Tabs defaultValue="create" className="w-full">
@@ -139,7 +139,7 @@ Rules:
           {/* Quiz Generator Form */}
           <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2 text-xl font-bold opacity-100">
+              <CardTitle className="text-white flex items-center gap-2">
                 <Brain className="h-5 w-5 text-purple-400" />
                 Create New Quiz with ChatGPT
               </CardTitle>
@@ -217,7 +217,7 @@ Rules:
           {/* Paste JSON Section */}
           <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2 text-xl font-bold opacity-100">
+              <CardTitle className="text-white flex items-center gap-2">
                 <Upload className="h-5 w-5 text-green-400" />
                 Paste Quiz JSON from ChatGPT
               </CardTitle>
@@ -271,25 +271,17 @@ Rules:
         </TabsContent>
 
         <TabsContent value="multi-subject" className="mt-6">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-black mb-2">Multi-Subject Quiz Creator</h2>
-            <p className="text-gray-600">Create comprehensive quizzes combining multiple subjects</p>
-          </div>
           <MultiSubjectQuiz />
         </TabsContent>
 
         <TabsContent value="analytics" className="mt-6">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-black mb-2">Quiz Analytics</h2>
-            <p className="text-gray-600">Track your performance and identify areas for improvement</p>
-          </div>
           <QuizAnalytics />
         </TabsContent>
 
         <TabsContent value="history" className="mt-6">
           {/* Recent Quiz Sessions */}
           <div>
-            <h3 className="text-xl font-bold text-black mb-4 opacity-100">Quiz History</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Quiz History</h3>
             {isLoading ? (
               <div className="text-gray-400">Loading...</div>
             ) : sessions && sessions.length > 0 ? (

@@ -28,7 +28,7 @@ const GallerySection = () => {
   };
 
   if (loading) {
-    return <div className="p-4 text-gray-800">Loading gallery...</div>;
+    return <div className="p-4 text-white">Loading gallery...</div>;
   }
 
   const totalImages = notes.filter(note => note.file_type === 'image').length;
@@ -36,8 +36,8 @@ const GallerySection = () => {
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800">Gallery</h2>
-        <div className="flex items-center gap-2 text-gray-600">
+        <h2 className="text-xl font-bold text-white">Gallery</h2>
+        <div className="flex items-center gap-2 text-gray-400">
           <Image className="h-5 w-5" />
           <span className="text-sm">{totalImages} Images</span>
         </div>
@@ -45,9 +45,9 @@ const GallerySection = () => {
 
       {Object.keys(groupedNotes).length === 0 ? (
         <div className="text-center py-12">
-          <Image className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-gray-800 font-semibold mb-2">No images yet</h3>
-          <p className="text-gray-600 text-sm">Upload some notes with images to see them here!</p>
+          <Image className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+          <h3 className="text-white font-semibold mb-2">No images yet</h3>
+          <p className="text-gray-400 text-sm">Upload some notes with images to see them here!</p>
         </div>
       ) : (
         Object.entries(groupedNotes).map(([subjectName, subjectNotes]) => {
@@ -59,15 +59,15 @@ const GallerySection = () => {
             <div key={subjectName}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                <h3 className="text-lg font-semibold text-gray-800">{subjectName}</h3>
-                <span className="text-gray-600 text-sm">({imageNotes.length} images)</span>
+                <h3 className="text-lg font-semibold text-white">{subjectName}</h3>
+                <span className="text-gray-400 text-sm">({imageNotes.length} images)</span>
               </div>
               
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {imageNotes.map((note) => (
                   <Card 
                     key={note.id} 
-                    className="bg-white border-gray-200 overflow-hidden cursor-pointer hover:bg-gray-50 transition-colors shadow-sm"
+                    className="bg-gray-800 border-gray-700 overflow-hidden cursor-pointer hover:bg-gray-750 transition-colors"
                     onClick={() => setSelectedItem(note)}
                   >
                     <CardContent className="p-2">
@@ -81,7 +81,7 @@ const GallerySection = () => {
                           <FileImage className="h-3 w-3 text-blue-400" />
                         </div>
                       </div>
-                      <p className="text-gray-800 text-xs mt-1 truncate font-medium">{note.title}</p>
+                      <p className="text-white text-xs mt-1 truncate">{note.title}</p>
                     </CardContent>
                   </Card>
                 ))}
