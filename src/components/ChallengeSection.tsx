@@ -87,8 +87,8 @@ const ChallengeSection = () => {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-white mb-2">Quiz Challenges</h2>
-              <p className="text-lg text-gray-400">Create competitive quizzes and challenge your friends!</p>
+              <h2 className="text-3xl font-black text-white mb-2 opacity-100">Quiz Challenges</h2>
+              <p className="text-lg text-gray-400 font-semibold opacity-90">Create competitive quizzes and challenge your friends!</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -97,7 +97,7 @@ const ChallengeSection = () => {
                   <div className="mx-auto mb-4 p-4 bg-purple-500/20 rounded-full w-fit">
                     <Plus className="h-8 w-8 text-purple-400" />
                   </div>
-                  <CardTitle className="text-white text-xl">Create Challenge</CardTitle>
+                  <CardTitle className="text-white text-xl font-bold opacity-100">Create Challenge</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-gray-400 mb-4">
@@ -118,7 +118,7 @@ const ChallengeSection = () => {
                   <div className="mx-auto mb-4 p-4 bg-blue-500/20 rounded-full w-fit">
                     <Trophy className="h-8 w-8 text-blue-400" />
                   </div>
-                  <CardTitle className="text-white text-xl">Join Challenge</CardTitle>
+                  <CardTitle className="text-white text-xl font-bold opacity-100">Join Challenge</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-gray-400 mb-4">
@@ -146,7 +146,7 @@ const ChallengeSection = () => {
 
             <Card className="bg-gray-800 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2 text-xl">
+                <CardTitle className="text-white flex items-center gap-2 text-xl font-bold opacity-100">
                   <Target className="h-5 w-5 text-green-400" />
                   How Challenges Work
                 </CardTitle>

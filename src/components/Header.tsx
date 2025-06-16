@@ -126,11 +126,11 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40 overflow-hidden shadow-sm">
+      <header className="bg-green-50 border-b border-green-200 sticky top-0 z-40 overflow-hidden shadow-sm">
         <div className="p-3 sm:p-4">
           <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2 sm:gap-3">
             <div className="flex-1 min-w-0 max-w-full">
-              <div className="flex items-center gap-2 mb-1 border border-sky-500 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full bg-sky-50">
+              <div className="flex items-center gap-2 mb-1 border border-green-500 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 inline-flex max-w-full bg-green-100">
                 <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 whitespace-nowrap">StudySmart</h1>
               </div>
               <p className="text-gray-600 text-sm sm:text-base truncate max-w-full">
@@ -143,7 +143,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                   variant="ghost"
                   size="sm"
                   onClick={handleExamClick}
-                  className="flex items-center gap-1 sm:gap-2 text-sky-600 hover:text-sky-700 hover:bg-sky-50 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
+                  className="flex items-center gap-1 sm:gap-2 text-green-600 hover:text-green-700 hover:bg-green-100 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
                   title={`Click to visit ${getExamDisplayName(preferences.exam_type)} official website`}
                 >
                   <Target className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" />
@@ -184,7 +184,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
               placeholder="Search notes, subjects..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 pr-10 bg-gray-50 border-gray-300 text-gray-800 placeholder-gray-500 focus:border-sky-500 h-10 sm:h-11 w-full"
+              className="pl-10 pr-10 bg-green-50 border-green-300 text-gray-800 placeholder-gray-500 focus:border-green-500 h-10 sm:h-11 w-full"
             />
             {searchQuery && (
               <Button
