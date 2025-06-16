@@ -17,7 +17,7 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-1 py-1.5 z-50 safe-area-bottom shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 bg-green-800 border-t border-green-700 px-1 py-1.5 z-50 safe-area-bottom shadow-lg">
       <div className="flex justify-between items-center w-full max-w-full overflow-x-auto">
         {navItems.map((item, index) => {
           const Icon = item.icon;
@@ -27,10 +27,10 @@ const BottomNavigation = ({ activeSection, onSectionChange }: BottomNavigationPr
             <button
               key={item.id}
               onClick={() => onSectionChange(item.id)}
-              className={`flex flex-col items-center space-y-0.5 px-1 py-1 rounded-lg transition-colors min-w-0 flex-1 ${
+              className={`flex flex-col items-center space-y-0.5 px-0.5 py-1 rounded-lg transition-colors min-w-0 flex-1 ${
                 isActive
-                  ? 'text-sky-600 bg-sky-50'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  ? 'text-white bg-green-700'
+                  : 'text-green-200 hover:text-white hover:bg-green-700'
               }`}
             >
               <Icon className="h-5 w-5 flex-shrink-0" />

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from './Header';
 import StatsCards from './StatsCards';
@@ -183,7 +182,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-800">
+    <div className="min-h-screen bg-green-100 text-gray-800">
       <Header 
         onSearchResults={handleSearchResults} 
         onClearSearch={handleClearSearch}
