@@ -41,7 +41,7 @@ const NotesSection = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType?: 'image' | 'pdf') => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       const maxSize = 50 * 1024 * 1024; // 50MB limit
@@ -49,6 +49,18 @@ const NotesSection = () => {
         alert('File size must be less than 50MB');
         return;
       }
+      
+      // Validate file type based on button clicked
+      if (fileType === 'image' && !selectedFile.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      
+      if (fileType === 'pdf' && selectedFile.type !== 'application/pdf') {
+        alert('Please select a PDF file');
+        return;
+      }
+      
       setFile(selectedFile);
     }
   };
@@ -174,35 +186,73 @@ const NotesSection = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Upload File (Image or PDF)
+                  Upload Files
                 </label>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <input
                     type="file"
-                    onChange={handleFileChange}
+                    onChange={(e) => handleFileChange(e, 'image')}
+                    accept="image/*"
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  <label 
+                    htmlFor="image-upload"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 border border-blue-500 rounded cursor-pointer text-white text-sm"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                    Upload Image
+                  </label>
+                  
+                  <input
+                    type="file"
+                    onChange={(e) => handleFileChange(e, 'pdf')}
+                    accept="application/pdf"
+                    className="hidden"
+                    id="pdf-upload"
+                  />
+                  <label 
+                    htmlFor="pdf-upload"
+                    className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 border border-red-500 rounded cursor-pointer text-white text-sm"
+                  >
+                    <File className="h-4 w-4" />
+                    Upload PDF
+                  </label>
+                  
+                  <input
+                    type="file"
+                    onChange={(e) => handleFileChange(e)}
                     accept="image/*,application/pdf"
                     className="hidden"
                     id="file-upload"
                   />
                   <label 
                     htmlFor="file-upload"
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded cursor-pointer text-white"
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 border border-gray-500 rounded cursor-pointer text-white text-sm"
                   >
                     <Upload className="h-4 w-4" />
                     Choose File
                   </label>
+                  
                   {file && (
-                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                    <div className="flex items-center gap-2 text-sm text-gray-300 bg-gray-700 px-3 py-1 rounded">
                       {file.type.startsWith('image/') ? (
                         <ImageIcon className="h-4 w-4" />
                       ) : (
                         <File className="h-4 w-4" />
                       )}
-                      {file.name}
+                      <span className="truncate max-w-[200px]">{file.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => setFile(null)}
+                        className="text-red-400 hover:text-red-300 ml-1"
+                      >
+                        ×
+                      </button>
                     </div>
                   )}
                 </div>
-                <p className="text-gray-400 text-xs mt-1">Max file size: 50MB</p>
+                <p className="text-gray-400 text-xs mt-2">Max file size: 50MB. Supported formats: Images (JPG, PNG, GIF, etc.) and PDF files.</p>
               </div>
 
               <div className="flex gap-2">
