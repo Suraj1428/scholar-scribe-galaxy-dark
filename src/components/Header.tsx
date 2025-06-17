@@ -23,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
   const [searchQuery, setSearchQuery] = useState('');
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [greeting, setGreeting] = useState('');
+  const [hasExamUpdates, setHasExamUpdates] = useState(true); // For demo purposes, set to true
 
   // Update greeting based on current time
   useEffect(() => {
@@ -121,6 +122,8 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
     const exam = examTypes.find(e => e.value === preferences.exam_type);
     if (exam?.website) {
       window.open(exam.website, '_blank');
+      // Optionally clear the notification after visiting
+      // setHasExamUpdates(false);
     }
   };
 
@@ -143,13 +146,18 @@ const Header: React.FC<HeaderProps> = ({ onSearchResults, onClearSearch, activeS
                   variant="ghost"
                   size="sm"
                   onClick={handleExamClick}
-                  className="flex items-center gap-1 sm:gap-2 text-sky-600 hover:text-sky-700 hover:bg-sky-50 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
+                  className="relative flex items-center gap-1 sm:gap-2 text-sky-600 hover:text-sky-700 hover:bg-sky-50 transition-colors px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm"
                   title={`Click to visit ${getExamDisplayName(preferences.exam_type)} official website`}
                 >
                   <Target className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 flex-shrink-0" />
                   <span className="font-medium whitespace-nowrap">
                     {getExamDisplayName(preferences.exam_type)}
                   </span>
+                  {hasExamUpdates && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse">
+                      <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                    </div>
+                  )}
                 </Button>
               )}
               <Button
