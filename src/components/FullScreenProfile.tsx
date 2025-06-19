@@ -53,6 +53,7 @@ const FullScreenProfile = ({
   
   const examTypes = [
     { value: 'upsc', label: 'UPSC', website: 'https://www.upsc.gov.in/' },
+    { value: 'btech', label: 'BTECH', website: 'https://www.jntuacek.ac.in/'},
     { value: 'gate', label: 'GATE', website: 'https://gate.iitg.ac.in/' },
     { value: 'ssc', label: 'SSC', website: 'https://ssc.nic.in/' },
     { value: 'rrb', label: 'RRB Railway', website: 'https://www.rrbcdg.gov.in/' },
