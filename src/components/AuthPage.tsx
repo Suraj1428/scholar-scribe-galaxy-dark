@@ -111,7 +111,7 @@ const AuthPage = () => {
   <div className="flex justify-center">
     <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg overflow-hidden rounded-xl">
       <img 
-        src="https://cdn.openai.com/chat-assets/user-uploads/A_3D-rendered_digital_illustration_in_Pixar-style_.png" 
+        src="https:///file_00000000f50c61f99a99544a3edb87e7.png" 
         alt="StudySmart Students" 
         className="w-full h-auto object-cover"
       />
