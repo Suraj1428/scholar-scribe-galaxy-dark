@@ -107,20 +107,26 @@ const AuthPage = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gray-800/90 border-gray-700 backdrop-blur-sm">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="p-3 bg-purple-600 rounded-full">
-              <BookOpen className="h-8 w-8 text-white" />
-            </div>
-          </div>
-          <CardTitle className="text-2xl font-bold text-white">StudySmart</CardTitle>
-          <p className="text-gray-400">
-            {isSignUp ? 'Create your account' : 'Welcome back'}
-          </p>
-        </CardHeader>
+  return (<CardHeader className="text-center space-y-4">
+  <div className="flex justify-center">
+    <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg overflow-hidden rounded-xl">
+      <img 
+        src="https://cdn.openai.com/chat-assets/user-uploads/A_3D-rendered_digital_illustration_in_Pixar-style_.png" 
+        alt="StudySmart Students" 
+        className="w-full h-auto object-cover"
+      />
+    </div>
+  </div>
+  <div className="flex justify-center">
+    <div className="p-3 bg-purple-600 rounded-full">
+      <BookOpen className="h-8 w-8 text-white" />
+    </div>
+  </div>
+  <CardTitle className="text-2xl font-bold text-white">StudySmart</CardTitle>
+  <p className="text-gray-400">
+    {isSignUp ? 'Create your account' : 'Welcome back'}
+  </p>
+</CardHeader>
         <CardContent className="space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && (
